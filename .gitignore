@@ -1,0 +1,22 @@
+# ── Never publish: private judge data and answer keys ──
+algolab_developer_handoff/
+private/
+worker/private/
+tests/private/
+*judge_tests_private*.json
+reference_solutions.py
+build_problem_bank.py
+validate_problem_bank.py
+
+# build / tooling
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.wrangler/
+.wrangler-dev.log
+.dev.vars
+test-results/
+playwright-report/
+.env*

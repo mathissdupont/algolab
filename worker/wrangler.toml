@@ -1,0 +1,12 @@
+name = "algolab-judge"
+main = "src/index.ts"
+compatibility_date = "2025-09-01"
+
+[vars]
+# Browsers on these origins may call the judge.
+ALLOWED_ORIGINS = "https://mathissdupont.github.io,http://localhost:3000,http://localhost:4173"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "algolab"
+database_id = "REPLACE_WITH_D1_ID"

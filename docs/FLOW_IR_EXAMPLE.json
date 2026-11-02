@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1-proposal",
+  "note": "Illustrative program graph, not executable until the proposed interpreter is implemented.",
+  "problem_id": "ALG-E002",
+  "title": "Count Even Readings",
+  "nodes": [
+    {"id": "start", "kind": "start", "data": {}},
+    {"id": "input", "kind": "input", "data": {"bindings": [{"name": "numbers", "type": "int[]"}]}},
+    {"id": "count", "kind": "assign", "data": {"target": "count", "expression": "0"}},
+    {"id": "index", "kind": "assign", "data": {"target": "index", "expression": "0"}},
+    {"id": "loop", "kind": "while", "data": {"condition": "index < length(numbers)"}},
+    {"id": "is_even", "kind": "decision", "data": {"condition": "numbers[index] % 2 == 0"}},
+    {"id": "increment_count", "kind": "assign", "data": {"target": "count", "expression": "count + 1"}},
+    {"id": "increment_index", "kind": "assign", "data": {"target": "index", "expression": "index + 1"}},
+    {"id": "return", "kind": "return", "data": {"expression": "count"}}
+  ],
+  "edges": [
+    {"from": "start", "port": "next", "to": "input"},
+    {"from": "input", "port": "next", "to": "count"},
+    {"from": "count", "port": "next", "to": "index"},
+    {"from": "index", "port": "next", "to": "loop"},
+    {"from": "loop", "port": "body", "to": "is_even"},
+    {"from": "loop", "port": "exit", "to": "return"},
+    {"from": "is_even", "port": "true", "to": "increment_count"},
+    {"from": "is_even", "port": "false", "to": "increment_index"},
+    {"from": "increment_count", "port": "next", "to": "increment_index"},
+    {"from": "increment_index", "port": "next", "to": "loop"}
+  ],
+  "expected_public_run": {
+    "input": {"numbers": [3, 8, 5, 12, 7, 6]},
+    "output": 3,
+    "safety_limits": {"max_steps": 10000, "max_variables": 32}
+  }
+}

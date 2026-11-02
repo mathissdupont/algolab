@@ -1,0 +1,4368 @@
+{
+  "schema_version": "1.0",
+  "language": "en",
+  "count": 60,
+  "problems": [
+    {
+      "id": "ALG-E001",
+      "slug": "array-sum",
+      "title": "Sum the Readings",
+      "difficulty": "Easy",
+      "category": "Arrays",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Return the sum of all integers in numbers. An empty list has a sum of zero.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= length <= 1000",
+        "-100000 <= value <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E001-T01",
+          "input": {
+            "numbers": [
+              3,
+              1,
+              -2,
+              4
+            ]
+          },
+          "output": 6
+        },
+        {
+          "case_id": "ALG-E001-T02",
+          "input": {
+            "numbers": []
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E002",
+      "slug": "count-even",
+      "title": "Count Even Readings",
+      "difficulty": "Easy",
+      "category": "Loops",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Count how many numbers are divisible by two. Zero and negative even integers count.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E002-T01",
+          "input": {
+            "numbers": [
+              3,
+              8,
+              5,
+              12,
+              7,
+              6
+            ]
+          },
+          "output": 3
+        },
+        {
+          "case_id": "ALG-E002-T02",
+          "input": {
+            "numbers": [
+              1,
+              3,
+              5
+            ]
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E003",
+      "slug": "array-maximum",
+      "title": "Highest Sensor Value",
+      "difficulty": "Easy",
+      "category": "Arrays",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Find the greatest integer in the non-empty numbers array.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "1 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E003-T01",
+          "input": {
+            "numbers": [
+              2,
+              8,
+              1,
+              5
+            ]
+          },
+          "output": 8
+        },
+        {
+          "case_id": "ALG-E003-T02",
+          "input": {
+            "numbers": [
+              -9,
+              -4,
+              -12
+            ]
+          },
+          "output": -4
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E004",
+      "slug": "first-target-index",
+      "title": "First Matching Position",
+      "difficulty": "Easy",
+      "category": "Arrays",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Return the zero-based index of the first occurrence of target. Return -1 if target is absent.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "target"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "target": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E004-T01",
+          "input": {
+            "numbers": [
+              4,
+              7,
+              4,
+              9
+            ],
+            "target": 4
+          },
+          "output": 0
+        },
+        {
+          "case_id": "ALG-E004-T02",
+          "input": {
+            "numbers": [
+              2,
+              3
+            ],
+            "target": 9
+          },
+          "output": -1
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E005",
+      "slug": "reverse-text",
+      "title": "Reverse the Message",
+      "difficulty": "Easy",
+      "category": "Strings",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "strings",
+        "loops"
+      ],
+      "statement": "Return text with all characters in reverse order. Preserve capitalization, spaces, and punctuation.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "string"
+      },
+      "constraints": [
+        "0 <= text length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E005-T01",
+          "input": {
+            "text": "robot"
+          },
+          "output": "tobor"
+        },
+        {
+          "case_id": "ALG-E005-T02",
+          "input": {
+            "text": "A b!"
+          },
+          "output": "!b A"
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E006",
+      "slug": "palindrome-text",
+      "title": "Mirror Word Check",
+      "difficulty": "Easy",
+      "category": "Strings",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "strings",
+        "two-pointers"
+      ],
+      "statement": "Return true when text reads identically forward and backward. The comparison is case-sensitive and includes spaces.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "boolean"
+      },
+      "constraints": [
+        "0 <= text length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E006-T01",
+          "input": {
+            "text": "level"
+          },
+          "output": true
+        },
+        {
+          "case_id": "ALG-E006-T02",
+          "input": {
+            "text": "hello"
+          },
+          "output": false
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E007",
+      "slug": "count-vowels",
+      "title": "Vowel Counter",
+      "difficulty": "Easy",
+      "category": "Strings",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "strings",
+        "loops"
+      ],
+      "statement": "Count the English vowels a, e, i, o, u in text. Uppercase and lowercase vowels count equally; y does not count.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Input uses ASCII characters",
+        "0 <= text length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E007-T01",
+          "input": {
+            "text": "Algorithm"
+          },
+          "output": 3
+        },
+        {
+          "case_id": "ALG-E007-T02",
+          "input": {
+            "text": "why"
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E008",
+      "slug": "distinct-count",
+      "title": "Count Different Codes",
+      "difficulty": "Easy",
+      "category": "Hashing",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "arrays",
+        "sets"
+      ],
+      "statement": "Return the number of distinct integer values in numbers. Count each unique value once.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E008-T01",
+          "input": {
+            "numbers": [
+              4,
+              4,
+              2,
+              8,
+              2
+            ]
+          },
+          "output": 3
+        },
+        {
+          "case_id": "ALG-E008-T02",
+          "input": {
+            "numbers": []
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n) average"
+    },
+    {
+      "id": "ALG-E009",
+      "slug": "is-nondecreasing",
+      "title": "Sorted Order Check",
+      "difficulty": "Easy",
+      "category": "Arrays",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Return true if each element is less than or equal to the element immediately after it. Empty and one-element arrays are sorted.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "boolean"
+      },
+      "constraints": [
+        "0 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E009-T01",
+          "input": {
+            "numbers": [
+              1,
+              2,
+              2,
+              5
+            ]
+          },
+          "output": true
+        },
+        {
+          "case_id": "ALG-E009-T02",
+          "input": {
+            "numbers": [
+              1,
+              3,
+              2
+            ]
+          },
+          "output": false
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E010",
+      "slug": "count-occurrences",
+      "title": "Frequency of a Code",
+      "difficulty": "Easy",
+      "category": "Arrays",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Count the number of positions whose value equals target.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "target"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "target": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E010-T01",
+          "input": {
+            "numbers": [
+              3,
+              3,
+              1,
+              3
+            ],
+            "target": 3
+          },
+          "output": 3
+        },
+        {
+          "case_id": "ALG-E010-T02",
+          "input": {
+            "numbers": [
+              1,
+              2
+            ],
+            "target": 4
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E011",
+      "slug": "running-totals",
+      "title": "Running Energy Total",
+      "difficulty": "Easy",
+      "category": "Prefix Sum",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Return an array where each position contains the sum of all readings up to and including that position.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "0 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E011-T01",
+          "input": {
+            "numbers": [
+              1,
+              2,
+              3
+            ]
+          },
+          "output": [
+            1,
+            3,
+            6
+          ]
+        },
+        {
+          "case_id": "ALG-E011-T02",
+          "input": {
+            "numbers": [
+              -1,
+              5,
+              -2
+            ]
+          },
+          "output": [
+            -1,
+            4,
+            2
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E012",
+      "slug": "merge-two-sorted",
+      "title": "Merge Two Sensor Logs",
+      "difficulty": "Easy",
+      "category": "Two Pointers",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Merge two individually non-decreasing integer arrays into one non-decreasing array, keeping every occurrence.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "a",
+          "b"
+        ],
+        "properties": {
+          "a": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "b": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "Both input arrays are sorted",
+        "0 <= combined length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E012-T01",
+          "input": {
+            "a": [
+              1,
+              3,
+              5
+            ],
+            "b": [
+              2,
+              4
+            ]
+          },
+          "output": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "case_id": "ALG-E012-T02",
+          "input": {
+            "a": [],
+            "b": [
+              3,
+              7
+            ]
+          },
+          "output": [
+            3,
+            7
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(m+n)"
+    },
+    {
+      "id": "ALG-E013",
+      "slug": "first-pair-sum",
+      "title": "First Pair Matching a Target",
+      "difficulty": "Easy",
+      "category": "Hashing",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "arrays",
+        "hash-maps",
+        "loops"
+      ],
+      "statement": "Find two distinct indices i and j with i < j whose values sum to target. Return the lexicographically smallest pair [i,j], or [-1,-1] when no pair exists.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "target"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "target": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "0 <= length <= 500",
+        "Indices are zero-based"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E013-T01",
+          "input": {
+            "numbers": [
+              2,
+              7,
+              11,
+              15
+            ],
+            "target": 9
+          },
+          "output": [
+            0,
+            1
+          ]
+        },
+        {
+          "case_id": "ALG-E013-T02",
+          "input": {
+            "numbers": [
+              3,
+              3
+            ],
+            "target": 6
+          },
+          "output": [
+            0,
+            1
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n) possible"
+    },
+    {
+      "id": "ALG-E014",
+      "slug": "binary-search-first",
+      "title": "First Position in Sorted Data",
+      "difficulty": "Easy",
+      "category": "Binary Search",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "In a non-decreasing array, return the first index containing target, or -1 if target is absent. Repeated values must return the earliest index.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "target"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "target": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Input is sorted",
+        "0 <= length <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E014-T01",
+          "input": {
+            "numbers": [
+              1,
+              2,
+              2,
+              2,
+              5
+            ],
+            "target": 2
+          },
+          "output": 1
+        },
+        {
+          "case_id": "ALG-E014-T02",
+          "input": {
+            "numbers": [
+              1,
+              4,
+              6
+            ],
+            "target": 3
+          },
+          "output": -1
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(log n)"
+    },
+    {
+      "id": "ALG-E015",
+      "slug": "rotate-right",
+      "title": "Rotate the Queue",
+      "difficulty": "Easy",
+      "category": "Arrays",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Return the array rotated right by k positions. A rotation moves the last value to the front; an empty array remains empty.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "k"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "k": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "k >= 0",
+        "0 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E015-T01",
+          "input": {
+            "numbers": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "k": 1
+          },
+          "output": [
+            4,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "case_id": "ALG-E015-T02",
+          "input": {
+            "numbers": [
+              1,
+              2,
+              3
+            ],
+            "k": 5
+          },
+          "output": [
+            2,
+            3,
+            1
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E016",
+      "slug": "missing-zero-to-n",
+      "title": "Missing Sequence Identifier",
+      "difficulty": "Easy",
+      "category": "Math",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "numbers contains every integer from 0 through n except exactly one, where n is the array length. Return the missing integer.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "All values are distinct",
+        "0 <= n <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E016-T01",
+          "input": {
+            "numbers": [
+              3,
+              0,
+              1
+            ]
+          },
+          "output": 2
+        },
+        {
+          "case_id": "ALG-E016-T02",
+          "input": {
+            "numbers": [
+              0,
+              1
+            ]
+          },
+          "output": 2
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E017",
+      "slug": "max-ones-run",
+      "title": "Longest Online Streak",
+      "difficulty": "Easy",
+      "category": "Arrays",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Given an array containing only 0 and 1, find the longest contiguous run of 1 values.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "bits"
+        ],
+        "properties": {
+          "bits": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Every element is 0 or 1",
+        "0 <= length <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E017-T01",
+          "input": {
+            "bits": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1
+            ]
+          },
+          "output": 3
+        },
+        {
+          "case_id": "ALG-E017-T02",
+          "input": {
+            "bits": [
+              0,
+              0,
+              0
+            ]
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E018",
+      "slug": "move-zeros-end",
+      "title": "Compact Nonzero Values",
+      "difficulty": "Easy",
+      "category": "Two Pointers",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Move all zeros to the end of the array while preserving the relative order of nonzero values. Return the resulting array.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "0 <= length <= 10000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E018-T01",
+          "input": {
+            "numbers": [
+              0,
+              1,
+              0,
+              3,
+              12
+            ]
+          },
+          "output": [
+            1,
+            3,
+            12,
+            0,
+            0
+          ]
+        },
+        {
+          "case_id": "ALG-E018-T02",
+          "input": {
+            "numbers": [
+              0,
+              0,
+              0
+            ]
+          },
+          "output": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E019",
+      "slug": "second-largest-distinct",
+      "title": "Runner-Up Measurement",
+      "difficulty": "Easy",
+      "category": "Arrays",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Return the second-largest distinct integer in numbers. Return null when fewer than two distinct values exist.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "constraints": [
+        "0 <= length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E019-T01",
+          "input": {
+            "numbers": [
+              4,
+              2,
+              9,
+              9,
+              7
+            ]
+          },
+          "output": 7
+        },
+        {
+          "case_id": "ALG-E019-T02",
+          "input": {
+            "numbers": [
+              5,
+              5
+            ]
+          },
+          "output": null
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-E020",
+      "slug": "fizzbuzz-labels",
+      "title": "Multiples Label Generator",
+      "difficulty": "Easy",
+      "category": "Loops",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "foundation",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "For each integer from 1 to n, return Fizz when divisible by 3, Buzz when divisible by 5, FizzBuzz when divisible by both, otherwise its decimal string.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "n"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "constraints": [
+        "0 <= n <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-E020-T01",
+          "input": {
+            "n": 5
+          },
+          "output": [
+            "1",
+            "2",
+            "Fizz",
+            "4",
+            "Buzz"
+          ]
+        },
+        {
+          "case_id": "ALG-E020-T02",
+          "input": {
+            "n": 15
+          },
+          "output": [
+            "1",
+            "2",
+            "Fizz",
+            "4",
+            "Buzz",
+            "Fizz",
+            "7",
+            "8",
+            "Fizz",
+            "Buzz",
+            "11",
+            "Fizz",
+            "13",
+            "14",
+            "FizzBuzz"
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-M001",
+      "slug": "single-trade-profit",
+      "title": "Best Single Trade",
+      "difficulty": "Medium",
+      "category": "Greedy",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Given prices for consecutive days, buy on one day and sell on a strictly later day to maximize profit. Return 0 if no positive profit exists.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "prices"
+        ],
+        "properties": {
+          "prices": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Every price >= 0",
+        "0 <= days <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M001-T01",
+          "input": {
+            "prices": [
+              7,
+              1,
+              5,
+              3,
+              6,
+              4
+            ]
+          },
+          "output": 5
+        },
+        {
+          "case_id": "ALG-M001-T02",
+          "input": {
+            "prices": [
+              7,
+              6,
+              4,
+              3,
+              1
+            ]
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-M002",
+      "slug": "unique-window-length",
+      "title": "Longest Unique-Character Window",
+      "difficulty": "Medium",
+      "category": "Sliding Window",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "strings",
+        "sets",
+        "two-pointers"
+      ],
+      "statement": "Return the maximum length of a contiguous substring that contains no repeated characters. An empty string returns zero.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= text length <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M002-T01",
+          "input": {
+            "text": "abcabcbb"
+          },
+          "output": 3
+        },
+        {
+          "case_id": "ALG-M002-T02",
+          "input": {
+            "text": "pwwkew"
+          },
+          "output": 3
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n) average"
+    },
+    {
+      "id": "ALG-M003",
+      "slug": "balanced-brackets",
+      "title": "Bracket Sequence Validator",
+      "difficulty": "Medium",
+      "category": "Stack",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "stack",
+        "strings"
+      ],
+      "statement": "The input contains only (), [], and {} symbols. Return true when every opening bracket is closed by the matching type in correct nesting order.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "boolean"
+      },
+      "constraints": [
+        "Input alphabet is ()[]{}",
+        "0 <= length <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M003-T01",
+          "input": {
+            "text": "([]{})"
+          },
+          "output": true
+        },
+        {
+          "case_id": "ALG-M003-T02",
+          "input": {
+            "text": "([)]"
+          },
+          "output": false
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-M004",
+      "slug": "product-except-position",
+      "title": "Product of Other Positions",
+      "difficulty": "Medium",
+      "category": "Prefix/Suffix",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Return an array where result[i] equals the product of all input values except numbers[i]. Use exact integer arithmetic, including zeros.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "1 <= length <= 1000",
+        "The resulting values fit supported integers"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M004-T01",
+          "input": {
+            "numbers": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "output": [
+            24,
+            12,
+            8,
+            6
+          ]
+        },
+        {
+          "case_id": "ALG-M004-T02",
+          "input": {
+            "numbers": [
+              0,
+              2,
+              3
+            ]
+          },
+          "output": [
+            6,
+            0,
+            0
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-M005",
+      "slug": "count-subarrays-target",
+      "title": "Count Target-Sum Subarrays",
+      "difficulty": "Medium",
+      "category": "Prefix Sum",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "arrays",
+        "hash-maps",
+        "prefix-sum"
+      ],
+      "statement": "Count non-empty contiguous subarrays whose sum equals target. Negative numbers and zero are allowed.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "target"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "target": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= length <= 20000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M005-T01",
+          "input": {
+            "numbers": [
+              1,
+              1,
+              1
+            ],
+            "target": 2
+          },
+          "output": 2
+        },
+        {
+          "case_id": "ALG-M005-T02",
+          "input": {
+            "numbers": [
+              1,
+              -1,
+              0
+            ],
+            "target": 0
+          },
+          "output": 3
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n) average"
+    },
+    {
+      "id": "ALG-M006",
+      "slug": "minimum-positive-window",
+      "title": "Shortest Sufficient Segment",
+      "difficulty": "Medium",
+      "category": "Sliding Window",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Given positive integers and a positive target, return the minimum length of a contiguous subarray whose sum is at least target. Return 0 if none exists.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "target"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "target": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Every array value > 0",
+        "target > 0",
+        "0 <= length <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M006-T01",
+          "input": {
+            "numbers": [
+              2,
+              3,
+              1,
+              2,
+              4,
+              3
+            ],
+            "target": 7
+          },
+          "output": 2
+        },
+        {
+          "case_id": "ALG-M006-T02",
+          "input": {
+            "numbers": [
+              1,
+              1,
+              1
+            ],
+            "target": 10
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-M007",
+      "slug": "merge-closed-intervals",
+      "title": "Consolidate Time Windows",
+      "difficulty": "Medium",
+      "category": "Intervals",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Merge all closed intervals that overlap or touch at an endpoint. Return merged [start,end] pairs sorted by starting coordinate.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "intervals"
+        ],
+        "properties": {
+          "intervals": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "constraints": [
+        "Each interval has exactly two integers with start <= end",
+        "0 <= intervals <= 10000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M007-T01",
+          "input": {
+            "intervals": [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                6
+              ],
+              [
+                8,
+                10
+              ]
+            ]
+          },
+          "output": [
+            [
+              1,
+              6
+            ],
+            [
+              8,
+              10
+            ]
+          ]
+        },
+        {
+          "case_id": "ALG-M007-T02",
+          "input": {
+            "intervals": [
+              [
+                1,
+                4
+              ],
+              [
+                4,
+                5
+              ]
+            ]
+          },
+          "output": [
+            [
+              1,
+              5
+            ]
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n log n)"
+    },
+    {
+      "id": "ALG-M008",
+      "slug": "rotated-search-index",
+      "title": "Find in a Rotated Log",
+      "difficulty": "Medium",
+      "category": "Binary Search",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "A strictly increasing array was rotated around a pivot. Return the index of target, or -1 when absent. All values are distinct.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "target"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "target": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Distinct values",
+        "Array is a rotated strictly increasing sequence"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M008-T01",
+          "input": {
+            "numbers": [
+              4,
+              5,
+              6,
+              7,
+              0,
+              1,
+              2
+            ],
+            "target": 0
+          },
+          "output": 4
+        },
+        {
+          "case_id": "ALG-M008-T02",
+          "input": {
+            "numbers": [
+              4,
+              5,
+              6,
+              7,
+              0,
+              1,
+              2
+            ],
+            "target": 3
+          },
+          "output": -1
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(log n)"
+    },
+    {
+      "id": "ALG-M009",
+      "slug": "spiral-walk",
+      "title": "Clockwise Matrix Walk",
+      "difficulty": "Medium",
+      "category": "Matrix",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "matrix",
+        "loops",
+        "boundaries"
+      ],
+      "statement": "Return the entries of a rectangular integer matrix in clockwise spiral order, starting at its top-left corner and moving right first.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "matrix"
+        ],
+        "properties": {
+          "matrix": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "Rows all have equal length",
+        "0 <= rows, columns <= 100"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M009-T01",
+          "input": {
+            "matrix": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                7,
+                8,
+                9
+              ]
+            ]
+          },
+          "output": [
+            1,
+            2,
+            3,
+            6,
+            9,
+            8,
+            7,
+            4,
+            5
+          ]
+        },
+        {
+          "case_id": "ALG-M009-T02",
+          "input": {
+            "matrix": [
+              [
+                1,
+                2,
+                3,
+                4
+              ]
+            ]
+          },
+          "output": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(rows*cols)"
+    },
+    {
+      "id": "ALG-M010",
+      "slug": "pascal-rows",
+      "title": "Build Pascal Layers",
+      "difficulty": "Medium",
+      "category": "Dynamic Programming",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "variables",
+        "comparisons",
+        "loops",
+        "arrays"
+      ],
+      "statement": "Return the first rows rows of Pascal's triangle. Each row starts and ends with 1; interior entries are the sum of the two entries above.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "rows"
+        ],
+        "properties": {
+          "rows": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "constraints": [
+        "0 <= rows <= 20"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M010-T01",
+          "input": {
+            "rows": 5
+          },
+          "output": [
+            [
+              1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              1,
+              3,
+              3,
+              1
+            ],
+            [
+              1,
+              4,
+              6,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "case_id": "ALG-M010-T02",
+          "input": {
+            "rows": 1
+          },
+          "output": [
+            [
+              1
+            ]
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(rows^2)"
+    },
+    {
+      "id": "ALG-M011",
+      "slug": "longest-palindrome-segment",
+      "title": "Longest Mirrored Segment",
+      "difficulty": "Medium",
+      "category": "Two Pointers",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "strings",
+        "two-pointers"
+      ],
+      "statement": "Return the longest contiguous palindromic substring of text. If multiple have the same maximum length, return the one with the smallest starting index.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "string"
+      },
+      "constraints": [
+        "0 <= text length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M011-T01",
+          "input": {
+            "text": "babad"
+          },
+          "output": "bab"
+        },
+        {
+          "case_id": "ALG-M011-T02",
+          "input": {
+            "text": "cbbd"
+          },
+          "output": "bb"
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n^2)"
+    },
+    {
+      "id": "ALG-M012",
+      "slug": "zigzag-rows",
+      "title": "Zigzag Message Layout",
+      "difficulty": "Medium",
+      "category": "Simulation",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "strings",
+        "arrays",
+        "simulation"
+      ],
+      "statement": "Write characters into the specified number of rows by moving down one row at a time, then up diagonally, repeating at boundaries. Return the concatenation of rows from top to bottom.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text",
+          "rows"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "rows": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "string"
+      },
+      "constraints": [
+        "rows >= 1",
+        "0 <= text length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M012-T01",
+          "input": {
+            "text": "PAYPALISHIRING",
+            "rows": 3
+          },
+          "output": "PAHNAPLSIIGYIR"
+        },
+        {
+          "case_id": "ALG-M012-T02",
+          "input": {
+            "text": "PAYPALISHIRING",
+            "rows": 4
+          },
+          "output": "PINALSIGYAHRPI"
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-M013",
+      "slug": "top-k-frequent",
+      "title": "Most Common Signal Codes",
+      "difficulty": "Medium",
+      "category": "Hashing",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "hash-maps",
+        "sorting"
+      ],
+      "statement": "Return the k distinct values with highest frequency. Order by descending frequency, then by ascending numeric value for ties.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "k"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "k": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "1 <= k <= count of distinct numbers",
+        "1 <= length <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M013-T01",
+          "input": {
+            "numbers": [
+              1,
+              1,
+              1,
+              2,
+              2,
+              3
+            ],
+            "k": 2
+          },
+          "output": [
+            1,
+            2
+          ]
+        },
+        {
+          "case_id": "ALG-M013-T02",
+          "input": {
+            "numbers": [
+              4,
+              4,
+              3,
+              3,
+              2
+            ],
+            "k": 2
+          },
+          "output": [
+            3,
+            4
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n log n) acceptable"
+    },
+    {
+      "id": "ALG-M014",
+      "slug": "next-greater-right",
+      "title": "Next Higher Reading",
+      "difficulty": "Medium",
+      "category": "Monotonic Stack",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "stack",
+        "arrays"
+      ],
+      "statement": "For each index, find the value of the first strictly greater element to its right. Return -1 when no greater value exists.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "0 <= length <= 100000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M014-T01",
+          "input": {
+            "numbers": [
+              2,
+              1,
+              2,
+              4,
+              3
+            ]
+          },
+          "output": [
+            4,
+            2,
+            4,
+            -1,
+            -1
+          ]
+        },
+        {
+          "case_id": "ALG-M014-T02",
+          "input": {
+            "numbers": [
+              5,
+              4,
+              3
+            ]
+          },
+          "output": [
+            -1,
+            -1,
+            -1
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-M015",
+      "slug": "minimum-coins",
+      "title": "Fewest Tokens for a Sum",
+      "difficulty": "Medium",
+      "category": "Dynamic Programming",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "arrays",
+        "dynamic-programming"
+      ],
+      "statement": "Given positive coin denominations (unlimited supply of each), return the fewest coins needed to total amount exactly. Return -1 if impossible.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "coins",
+          "amount"
+        ],
+        "properties": {
+          "coins": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "amount": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "All denominations > 0",
+        "0 <= amount <= 10000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M015-T01",
+          "input": {
+            "coins": [
+              1,
+              2,
+              5
+            ],
+            "amount": 11
+          },
+          "output": 3
+        },
+        {
+          "case_id": "ALG-M015-T02",
+          "input": {
+            "coins": [
+              2
+            ],
+            "amount": 3
+          },
+          "output": -1
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(amount * number_of_coins)"
+    },
+    {
+      "id": "ALG-M016",
+      "slug": "island-count",
+      "title": "Count Land Regions",
+      "difficulty": "Medium",
+      "category": "Graph Traversal",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "matrix",
+        "stack",
+        "graph-traversal"
+      ],
+      "statement": "A rectangular grid uses 1 for land and 0 for water. Count connected land regions using only up, down, left, and right adjacency.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "grid"
+        ],
+        "properties": {
+          "grid": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Grid entries are 0 or 1",
+        "All rows equal length"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M016-T01",
+          "input": {
+            "grid": [
+              [
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "output": 2
+        },
+        {
+          "case_id": "ALG-M016-T02",
+          "input": {
+            "grid": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(rows*cols)"
+    },
+    {
+      "id": "ALG-M017",
+      "slug": "shortest-open-grid-path",
+      "title": "Shortest Warehouse Walk",
+      "difficulty": "Medium",
+      "category": "Breadth-First Search",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "matrix",
+        "queue",
+        "graph-traversal"
+      ],
+      "statement": "In a rectangular grid, 0 means walkable and 1 blocked. Find the minimum number of four-direction moves from top-left to bottom-right. Return -1 if impossible.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "grid"
+        ],
+        "properties": {
+          "grid": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Grid entries are 0 or 1",
+        "All rows equal length"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M017-T01",
+          "input": {
+            "grid": [
+              [
+                0,
+                0,
+                1
+              ],
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                1,
+                1,
+                0
+              ]
+            ]
+          },
+          "output": 4
+        },
+        {
+          "case_id": "ALG-M017-T02",
+          "input": {
+            "grid": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          "output": -1
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(rows*cols)"
+    },
+    {
+      "id": "ALG-M018",
+      "slug": "equal-subset-partition",
+      "title": "Equal Load Split",
+      "difficulty": "Medium",
+      "category": "Dynamic Programming",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "arrays",
+        "sets",
+        "dynamic-programming"
+      ],
+      "statement": "Return true if the nonnegative values can be divided into two groups with exactly the same sum. Every input element must belong to one group.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "boolean"
+      },
+      "constraints": [
+        "All values >= 0",
+        "0 <= length <= 200",
+        "Sum <= 20000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M018-T01",
+          "input": {
+            "numbers": [
+              1,
+              5,
+              11,
+              5
+            ]
+          },
+          "output": true
+        },
+        {
+          "case_id": "ALG-M018-T02",
+          "input": {
+            "numbers": [
+              1,
+              2,
+              3,
+              5
+            ]
+          },
+          "output": false
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n * total_sum)"
+    },
+    {
+      "id": "ALG-M019",
+      "slug": "increasing-subsequence-length",
+      "title": "Longest Rising Trend",
+      "difficulty": "Medium",
+      "category": "Binary Search",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "arrays",
+        "binary-search"
+      ],
+      "statement": "Find the length of the longest strictly increasing subsequence. Elements in a subsequence retain original order but need not be adjacent.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= length <= 10000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M019-T01",
+          "input": {
+            "numbers": [
+              10,
+              9,
+              2,
+              5,
+              3,
+              7,
+              101,
+              18
+            ]
+          },
+          "output": 4
+        },
+        {
+          "case_id": "ALG-M019-T02",
+          "input": {
+            "numbers": [
+              0,
+              1,
+              0,
+              3,
+              2,
+              3
+            ]
+          },
+          "output": 4
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n log n)"
+    },
+    {
+      "id": "ALG-M020",
+      "slug": "zero-triplets",
+      "title": "Unique Zero-Sum Trios",
+      "difficulty": "Medium",
+      "category": "Two Pointers",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "intermediate",
+      "required_features": [
+        "arrays",
+        "sorting",
+        "two-pointers"
+      ],
+      "statement": "Find all unique value triplets [a,b,c] from distinct positions that sum to zero. Sort numbers inside each triplet ascending, then return triplets in lexicographic order without duplicates.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "constraints": [
+        "0 <= length <= 200"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-M020-T01",
+          "input": {
+            "numbers": [
+              -1,
+              0,
+              1,
+              2,
+              -1,
+              -4
+            ]
+          },
+          "output": [
+            [
+              -1,
+              -1,
+              2
+            ],
+            [
+              -1,
+              0,
+              1
+            ]
+          ]
+        },
+        {
+          "case_id": "ALG-M020-T02",
+          "input": {
+            "numbers": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "output": [
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n^2)"
+    },
+    {
+      "id": "ALG-H001",
+      "slug": "median-two-arrays",
+      "title": "Median Across Sorted Streams",
+      "difficulty": "Hard",
+      "category": "Binary Search",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "arrays",
+        "binary-search"
+      ],
+      "statement": "Two non-decreasing integer arrays are given and at least one is non-empty. Return the median of all their values, as a number, without relying on a complete merge for the intended optimal approach.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "a",
+          "b"
+        ],
+        "properties": {
+          "a": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "b": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "number"
+      },
+      "constraints": [
+        "Both arrays are sorted",
+        "Combined length >= 1"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H001-T01",
+          "input": {
+            "a": [
+              1,
+              3
+            ],
+            "b": [
+              2
+            ]
+          },
+          "output": 2.0
+        },
+        {
+          "case_id": "ALG-H001-T02",
+          "input": {
+            "a": [
+              1,
+              2
+            ],
+            "b": [
+              3,
+              4
+            ]
+          },
+          "output": 2.5
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(log(min(m,n)+1))"
+    },
+    {
+      "id": "ALG-H002",
+      "slug": "edit-distance",
+      "title": "Minimum Text Edits",
+      "difficulty": "Hard",
+      "category": "Dynamic Programming",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "strings",
+        "dynamic-programming"
+      ],
+      "statement": "Return the minimum number of single-character insertions, deletions, or substitutions needed to transform a into b. Each operation costs one.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "a",
+          "b"
+        ],
+        "properties": {
+          "a": {
+            "type": "string"
+          },
+          "b": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= each length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H002-T01",
+          "input": {
+            "a": "horse",
+            "b": "ros"
+          },
+          "output": 3
+        },
+        {
+          "case_id": "ALG-H002-T02",
+          "input": {
+            "a": "intention",
+            "b": "execution"
+          },
+          "output": 5
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(m*n)"
+    },
+    {
+      "id": "ALG-H003",
+      "slug": "longest-valid-parentheses",
+      "title": "Longest Correct Bracket Segment",
+      "difficulty": "Hard",
+      "category": "Stack",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "stack",
+        "strings"
+      ],
+      "statement": "The text contains only parentheses. Return the length of the longest contiguous substring that is a properly balanced parenthesis sequence.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Input alphabet is ()"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H003-T01",
+          "input": {
+            "text": "(()"
+          },
+          "output": 2
+        },
+        {
+          "case_id": "ALG-H003-T02",
+          "input": {
+            "text": ")()())"
+          },
+          "output": 4
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-H004",
+      "slug": "trapped-rainwater",
+      "title": "Water Between Barriers",
+      "difficulty": "Hard",
+      "category": "Two Pointers",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "arrays",
+        "two-pointers"
+      ],
+      "statement": "Each nonnegative array value is the height of a unit-width wall. Return how many unit squares of water are trapped above the bars after rainfall.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "heights"
+        ],
+        "properties": {
+          "heights": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Every height >= 0"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H004-T01",
+          "input": {
+            "heights": [
+              0,
+              1,
+              0,
+              2,
+              1,
+              0,
+              1,
+              3,
+              2,
+              1,
+              2,
+              1
+            ]
+          },
+          "output": 6
+        },
+        {
+          "case_id": "ALG-H004-T02",
+          "input": {
+            "heights": [
+              4,
+              2,
+              0,
+              3,
+              2,
+              5
+            ]
+          },
+          "output": 9
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-H005",
+      "slug": "minimum-cover-window",
+      "title": "Smallest Covering Substring",
+      "difficulty": "Hard",
+      "category": "Sliding Window",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "strings",
+        "hash-maps",
+        "sliding-window"
+      ],
+      "statement": "Find the shortest contiguous substring of text containing every character of required with at least the same multiplicity. Return the earliest window among ties, or an empty string if none exists. Empty required yields an empty string.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text",
+          "required"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "required": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "string"
+      },
+      "constraints": [
+        "0 <= text length <= 10000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H005-T01",
+          "input": {
+            "text": "ADOBECODEBANC",
+            "required": "ABC"
+          },
+          "output": "BANC"
+        },
+        {
+          "case_id": "ALG-H005-T02",
+          "input": {
+            "text": "a",
+            "required": "aa"
+          },
+          "output": ""
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n+|required|)"
+    },
+    {
+      "id": "ALG-H006",
+      "slug": "histogram-largest-rectangle",
+      "title": "Largest Rectangle in a Skyline",
+      "difficulty": "Hard",
+      "category": "Monotonic Stack",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "arrays",
+        "stack"
+      ],
+      "statement": "Given nonnegative heights for adjacent unit-width histogram bars, return the largest rectangular area that fits entirely under the bars.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "heights"
+        ],
+        "properties": {
+          "heights": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "All heights >= 0"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H006-T01",
+          "input": {
+            "heights": [
+              2,
+              1,
+              5,
+              6,
+              2,
+              3
+            ]
+          },
+          "output": 10
+        },
+        {
+          "case_id": "ALG-H006-T02",
+          "input": {
+            "heights": [
+              2,
+              4
+            ]
+          },
+          "output": 4
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-H007",
+      "slug": "sliding-window-maximum",
+      "title": "Peak Value per Window",
+      "difficulty": "Hard",
+      "category": "Deque",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "arrays",
+        "deque"
+      ],
+      "statement": "Return the maximum element of every contiguous window of exactly k elements, ordered by the window starting index.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers",
+          "k"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "k": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "1 <= k <= length of numbers"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H007-T01",
+          "input": {
+            "numbers": [
+              1,
+              3,
+              -1,
+              -3,
+              5,
+              3,
+              6,
+              7
+            ],
+            "k": 3
+          },
+          "output": [
+            3,
+            3,
+            5,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "case_id": "ALG-H007-T02",
+          "input": {
+            "numbers": [
+              1
+            ],
+            "k": 1
+          },
+          "output": [
+            1
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n)"
+    },
+    {
+      "id": "ALG-H008",
+      "slug": "word-transform-length",
+      "title": "One-Letter Word Route",
+      "difficulty": "Hard",
+      "category": "Graph Traversal",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "strings",
+        "sets",
+        "queue",
+        "graph-traversal"
+      ],
+      "statement": "Transform start into end by changing exactly one lowercase letter per step; every intermediate word and end must appear in dictionary. Return the number of words in the shortest sequence, including endpoints; return 0 if impossible. If start equals end, return 1.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "dictionary"
+        ],
+        "properties": {
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          },
+          "dictionary": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "All words lowercase a-z",
+        "All words have equal length",
+        "Word length <= 12"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H008-T01",
+          "input": {
+            "start": "hit",
+            "end": "cog",
+            "dictionary": [
+              "hot",
+              "dot",
+              "dog",
+              "lot",
+              "log",
+              "cog"
+            ]
+          },
+          "output": 5
+        },
+        {
+          "case_id": "ALG-H008-T02",
+          "input": {
+            "start": "hit",
+            "end": "cog",
+            "dictionary": [
+              "hot",
+              "dot",
+              "dog",
+              "lot",
+              "log"
+            ]
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "BFS; roughly O(dictionary_size * word_length * alphabet_size)"
+    },
+    {
+      "id": "ALG-H009",
+      "slug": "cheapest-route-limited-stops",
+      "title": "Cheapest Route with Stop Limit",
+      "difficulty": "Hard",
+      "category": "Graphs",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "graphs",
+        "dynamic-programming"
+      ],
+      "statement": "For directed flights [from,to,cost], find the least total cost from source to destination using at most max_stops intermediate cities (thus at most max_stops+1 edges). Return -1 if impossible.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "n",
+          "flights",
+          "source",
+          "destination",
+          "max_stops"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer"
+          },
+          "flights": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          "source": {
+            "type": "integer"
+          },
+          "destination": {
+            "type": "integer"
+          },
+          "max_stops": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= node id < n",
+        "Flight costs > 0",
+        "max_stops >= 0"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H009-T01",
+          "input": {
+            "n": 4,
+            "flights": [
+              [
+                0,
+                1,
+                100
+              ],
+              [
+                1,
+                2,
+                100
+              ],
+              [
+                0,
+                2,
+                500
+              ],
+              [
+                2,
+                3,
+                100
+              ]
+            ],
+            "source": 0,
+            "destination": 2,
+            "max_stops": 1
+          },
+          "output": 200
+        },
+        {
+          "case_id": "ALG-H009-T02",
+          "input": {
+            "n": 3,
+            "flights": [
+              [
+                0,
+                1,
+                100
+              ],
+              [
+                1,
+                2,
+                100
+              ],
+              [
+                0,
+                2,
+                500
+              ]
+            ],
+            "source": 0,
+            "destination": 2,
+            "max_stops": 0
+          },
+          "output": 500
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O((max_stops+1)*edges)"
+    },
+    {
+      "id": "ALG-H010",
+      "slug": "directed-shortest-route",
+      "title": "Least-Cost Directed Path",
+      "difficulty": "Hard",
+      "category": "Graphs",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "graphs",
+        "priority-queue"
+      ],
+      "statement": "Given n nodes and directed edges [u,v,weight] with nonnegative weights, return the least cost from source to destination, or -1 when unreachable.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "n",
+          "edges",
+          "source",
+          "destination"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          "source": {
+            "type": "integer"
+          },
+          "destination": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "n >= 1",
+        "Nonnegative edge weights",
+        "0 <= node id < n"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H010-T01",
+          "input": {
+            "n": 4,
+            "edges": [
+              [
+                0,
+                1,
+                2
+              ],
+              [
+                0,
+                2,
+                7
+              ],
+              [
+                1,
+                2,
+                1
+              ],
+              [
+                2,
+                3,
+                3
+              ]
+            ],
+            "source": 0,
+            "destination": 3
+          },
+          "output": 6
+        },
+        {
+          "case_id": "ALG-H010-T02",
+          "input": {
+            "n": 3,
+            "edges": [
+              [
+                0,
+                1,
+                4
+              ]
+            ],
+            "source": 0,
+            "destination": 2
+          },
+          "output": -1
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O((V+E) log V)"
+    },
+    {
+      "id": "ALG-H011",
+      "slug": "strong-component-count",
+      "title": "Strongly Connected Zones",
+      "difficulty": "Hard",
+      "category": "Graphs",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "graphs",
+        "stack",
+        "graph-traversal"
+      ],
+      "statement": "In a directed graph, count maximal groups where every node can reach every other node within the same group. Isolated nodes each form a group.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "n",
+          "edges"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "n >= 1",
+        "0 <= node id < n"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H011-T01",
+          "input": {
+            "n": 5,
+            "edges": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                4
+              ],
+              [
+                4,
+                3
+              ]
+            ]
+          },
+          "output": 2
+        },
+        {
+          "case_id": "ALG-H011-T02",
+          "input": {
+            "n": 3,
+            "edges": []
+          },
+          "output": 3
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(V+E)"
+    },
+    {
+      "id": "ALG-H012",
+      "slug": "lexicographic-task-order",
+      "title": "Smallest Valid Task Schedule",
+      "difficulty": "Hard",
+      "category": "Graphs",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "graphs",
+        "priority-queue"
+      ],
+      "statement": "For tasks numbered 0 through n-1, directed edge [u,v] requires u before v. Return the lexicographically smallest valid full ordering, or [] if dependencies contain a cycle.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "n",
+          "edges"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "constraints": [
+        "n >= 1",
+        "No duplicate edges",
+        "0 <= node id < n"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H012-T01",
+          "input": {
+            "n": 4,
+            "edges": [
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                3
+              ]
+            ]
+          },
+          "output": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "case_id": "ALG-H012-T02",
+          "input": {
+            "n": 2,
+            "edges": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          "output": []
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O((V+E) log V)"
+    },
+    {
+      "id": "ALG-H013",
+      "slug": "n-queens-count",
+      "title": "Count Nonattacking Queen Layouts",
+      "difficulty": "Hard",
+      "category": "Backtracking",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "recursion",
+        "backtracking"
+      ],
+      "statement": "Place n queens on an n-by-n board so no two share a row, column, or diagonal. Return the number of different valid placements.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "n"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "1 <= n <= 10"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H013-T01",
+          "input": {
+            "n": 4
+          },
+          "output": 2
+        },
+        {
+          "case_id": "ALG-H013-T02",
+          "input": {
+            "n": 1
+          },
+          "output": 1
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "Exponential worst case"
+    },
+    {
+      "id": "ALG-H014",
+      "slug": "regex-full-match",
+      "title": "Full Pattern Matcher",
+      "difficulty": "Hard",
+      "category": "Dynamic Programming",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "strings",
+        "dynamic-programming"
+      ],
+      "statement": "Return whether pattern matches the entire text. A dot matches any one character; * means zero or more repetitions of the immediately preceding pattern token. All other lowercase letters match literally.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text",
+          "pattern"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "boolean"
+      },
+      "constraints": [
+        "Pattern is valid: * never appears first or after another *",
+        "Text and literal pattern letters are lowercase a-z"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H014-T01",
+          "input": {
+            "text": "aab",
+            "pattern": "c*a*b"
+          },
+          "output": true
+        },
+        {
+          "case_id": "ALG-H014-T02",
+          "input": {
+            "text": "aa",
+            "pattern": "a"
+          },
+          "output": false
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(text_length * pattern_length)"
+    },
+    {
+      "id": "ALG-H015",
+      "slug": "wildcard-full-match",
+      "title": "Wildcard Filename Rule",
+      "difficulty": "Hard",
+      "category": "Dynamic Programming",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "strings",
+        "dynamic-programming"
+      ],
+      "statement": "Return whether pattern matches the entire text. ? matches any one character; * matches any sequence including empty; other characters match themselves.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text",
+          "pattern"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "boolean"
+      },
+      "constraints": [
+        "0 <= lengths <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H015-T01",
+          "input": {
+            "text": "adceb",
+            "pattern": "*a*b"
+          },
+          "output": true
+        },
+        {
+          "case_id": "ALG-H015-T02",
+          "input": {
+            "text": "acdcb",
+            "pattern": "a*c?b"
+          },
+          "output": false
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(text_length * pattern_length)"
+    },
+    {
+      "id": "ALG-H016",
+      "slug": "palindromic-subsequence-length",
+      "title": "Longest Mirror Subsequence",
+      "difficulty": "Hard",
+      "category": "Dynamic Programming",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "strings",
+        "dynamic-programming"
+      ],
+      "statement": "Return the length of the longest subsequence of text that reads the same forward and backward. Characters may be skipped without changing order.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= text length <= 1000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H016-T01",
+          "input": {
+            "text": "bbbab"
+          },
+          "output": 4
+        },
+        {
+          "case_id": "ALG-H016-T02",
+          "input": {
+            "text": "cbbd"
+          },
+          "output": 2
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n^2)"
+    },
+    {
+      "id": "ALG-H017",
+      "slug": "burst-balloons-max-score",
+      "title": "Maximum Balloon Burst Score",
+      "difficulty": "Hard",
+      "category": "Interval DP",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "arrays",
+        "dynamic-programming"
+      ],
+      "statement": "Burst balloons in any order. When balloon i bursts, score the product of its current immediate left neighbor, its own value, and its current immediate right neighbor. Missing neighbors count as 1. Return the maximum total score.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "numbers"
+        ],
+        "properties": {
+          "numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= length <= 150",
+        "Every value >= 0"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H017-T01",
+          "input": {
+            "numbers": [
+              3,
+              1,
+              5,
+              8
+            ]
+          },
+          "output": 167
+        },
+        {
+          "case_id": "ALG-H017-T02",
+          "input": {
+            "numbers": [
+              1,
+              5
+            ]
+          },
+          "output": 10
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n^3)"
+    },
+    {
+      "id": "ALG-H018",
+      "slug": "largest-binary-matrix-rectangle",
+      "title": "Largest Solid Rectangle",
+      "difficulty": "Hard",
+      "category": "Matrix",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "matrix",
+        "stack",
+        "dynamic-programming"
+      ],
+      "statement": "Return the area of the largest all-1 axis-aligned rectangle in a rectangular binary grid. Return 0 for an empty grid or no 1 cells.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "grid"
+        ],
+        "properties": {
+          "grid": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "Grid contains only 0 and 1",
+        "All rows equal length"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H018-T01",
+          "input": {
+            "grid": [
+              [
+                1,
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                0,
+                0,
+                1,
+                0
+              ]
+            ]
+          },
+          "output": 6
+        },
+        {
+          "case_id": "ALG-H018-T02",
+          "input": {
+            "grid": [
+              [
+                0
+              ]
+            ]
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(rows*cols)"
+    },
+    {
+      "id": "ALG-H019",
+      "slug": "minimum-palindrome-cuts",
+      "title": "Fewest Palindrome Splits",
+      "difficulty": "Hard",
+      "category": "Dynamic Programming",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "strings",
+        "dynamic-programming"
+      ],
+      "statement": "Split text into contiguous non-empty palindromic pieces using as few cuts as possible. Return the number of cuts. Empty text needs zero cuts.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "integer"
+      },
+      "constraints": [
+        "0 <= text length <= 2000"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H019-T01",
+          "input": {
+            "text": "aab"
+          },
+          "output": 1
+        },
+        {
+          "case_id": "ALG-H019-T02",
+          "input": {
+            "text": "a"
+          },
+          "output": 0
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(n^2)"
+    },
+    {
+      "id": "ALG-H020",
+      "slug": "critical-network-links",
+      "title": "Critical Network Links",
+      "difficulty": "Hard",
+      "category": "Graphs",
+      "status": "ready-for-curriculum-review",
+      "required_engine_tier": "advanced",
+      "required_features": [
+        "graphs",
+        "recursion",
+        "graph-traversal"
+      ],
+      "statement": "In an undirected graph, return all edges whose removal increases the number of connected components. Represent every bridge as [smaller_node, larger_node] and sort all bridges lexicographically.",
+      "input_schema": {
+        "type": "object",
+        "required": [
+          "n",
+          "edges"
+        ],
+        "properties": {
+          "n": {
+            "type": "integer"
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "constraints": [
+        "n >= 1",
+        "Undirected graph",
+        "No duplicate edges or self-loops",
+        "0 <= node id < n"
+      ],
+      "sample_cases": [
+        {
+          "case_id": "ALG-H020-T01",
+          "input": {
+            "n": 4,
+            "edges": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                1,
+                3
+              ]
+            ]
+          },
+          "output": [
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        {
+          "case_id": "ALG-H020-T02",
+          "input": {
+            "n": 3,
+            "edges": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ]
+          },
+          "output": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        }
+      ],
+      "test_count": 5,
+      "curriculum_hint": "",
+      "suggested_time_complexity": "O(V+E)"
+    }
+  ]
+}
