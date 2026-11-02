@@ -33,6 +33,7 @@
     "next-env.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "server/**/*.ts",
     "tests/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
@@ -40,6 +41,6 @@
   "exclude": [
     "node_modules",
     "out",
-    "worker"
+    "netlify"
   ]
 }

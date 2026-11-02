@@ -1,0 +1,9 @@
+# Judge API only (the site itself is on GitHub Pages). Deployed from a
+# machine that has netlify/private/judge_tests.json; see README.
+[build]
+  command = ""
+  publish = "netlify/public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"

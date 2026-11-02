@@ -1,7 +1,7 @@
 # ── Never publish: private judge data and answer keys ──
 algolab_developer_handoff/
 private/
-worker/private/
+netlify/private/
 tests/private/
 *judge_tests_private*.json
 reference_solutions.py
@@ -14,9 +14,7 @@ node_modules/
 out/
 next-env.d.ts
 *.tsbuildinfo
-.wrangler/
-.wrangler-dev.log
-.dev.vars
+.netlify/
 test-results/
 playwright-report/
 .env*

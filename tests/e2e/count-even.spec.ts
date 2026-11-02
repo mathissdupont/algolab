@@ -90,10 +90,18 @@ test("solve Count Even Readings with a flowchart", async ({ page }) => {
   await page.getByRole("button", { name: "Continue ⏭" }).click();
   await expect(page.getByText("✓ Matches the expected output")).toBeVisible();
 
-  // Check both public examples in the browser.
-  await page.getByRole("button", { name: /^(Check examples|Submit)$/ }).first().click();
-  await expect(page.getByText("Accepted")).toBeVisible();
-  await expect(page.getByText(/2 \/ 2 examples passed/)).toBeVisible();
+  // Without a judge the toolbar button checks the public examples in the
+  // browser; with NEXT_PUBLIC_JUDGE_URL it submits to the real judge.
+  if (process.env.NEXT_PUBLIC_JUDGE_URL) {
+    await page.getByRole("button", { name: "Submit", exact: true }).click();
+    await expect(page.getByText("Accepted")).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByText(/5 \/ 5 tests passed \(public \+ hidden\)/)).toBeVisible();
+    await expect(page.getByText("Hidden test 5")).toBeVisible();
+  } else {
+    await page.getByRole("button", { name: "Check examples" }).first().click();
+    await expect(page.getByText("Accepted")).toBeVisible();
+    await expect(page.getByText(/2 \/ 2 examples passed/)).toBeVisible();
+  }
 
   await page.screenshot({ path: "test-results/count-even-solved.png" });
 
