@@ -9,4 +9,4 @@ ALLOWED_ORIGINS = "https://mathissdupont.github.io,http://localhost:3000,http://
 [[d1_databases]]
 binding = "DB"
 database_name = "algolab"
-database_id = "REPLACE_WITH_D1_ID"
+database_id = "ec3a6162-b9d0-455e-b45b-42bca3d94004"
