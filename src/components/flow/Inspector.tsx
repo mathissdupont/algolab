@@ -3,14 +3,15 @@
 import { useRef } from "react";
 import { parseExpression, parseTarget } from "@/lib/engine/expression";
 import type { FlowNodeData, RFNode } from "@/lib/flow/convert";
+import { button, field } from "../ui";
 import { KIND_META } from "./FlowNode";
 
 type Field = "target" | "expression" | "condition" | "label";
 
-function check(field: Field, value: string | undefined): string | null {
-  if (field === "label" || !value?.trim()) return null;
+function check(f: Field, value: string | undefined): string | null {
+  if (f === "label" || !value?.trim()) return null;
   try {
-    if (field === "target") parseTarget(value.trim());
+    if (f === "target") parseTarget(value.trim());
     else parseExpression(value);
     return null;
   } catch (e) {
@@ -20,7 +21,7 @@ function check(field: Field, value: string | undefined): string | null {
 
 const FIELDS: Record<string, { field: Field; label: string; placeholder: string }[]> = {
   assign: [
-    { field: "target", label: "Variable", placeholder: "count   or   result[i]" },
+    { field: "target", label: "Variable", placeholder: "count  or  result[i]" },
     { field: "expression", label: "Value", placeholder: "count + 1" },
   ],
   decision: [{ field: "condition", label: "Condition", placeholder: "numbers[i] % 2 == 0" }],
@@ -28,26 +29,48 @@ const FIELDS: Record<string, { field: Field; label: string; placeholder: string 
   return: [{ field: "expression", label: "Return value", placeholder: "count" }],
 };
 
+export const PORT_LABEL: Record<string, string> = {
+  next: "Then go to",
+  true: "If true, go to",
+  false: "If false, go to",
+  body: "Loop body starts at",
+  exit: "After the loop, go to",
+};
+
+export interface PortChoice {
+  port: string;
+  target: string | null;
+}
+
 export function Inspector({
   node,
   knownVars,
+  ports,
+  targets,
   onChange,
   onBeginEdit,
+  onConnect,
   onDelete,
 }: {
   node: RFNode;
   knownVars: string[];
+  ports: PortChoice[];
+  targets: { id: string; label: string }[];
   onChange: (patch: Partial<FlowNodeData>) => void;
   onBeginEdit: () => void;
+  onConnect: (port: string, target: string | null) => void;
   onDelete: () => void;
 }) {
   const d = node.data;
   const meta = KIND_META[d.kind];
+  const Icon = meta.icon;
   const focused = useRef<{ el: HTMLInputElement; field: Field } | null>(null);
   const fields = FIELDS[d.kind] ?? [];
+  const fixed = d.kind === "start" || d.kind === "input";
 
   const insert = (text: string) => {
-    const f = focused.current ?? (fields.length ? { el: document.getElementById(`field-${fields.at(-1)!.field}`) as HTMLInputElement, field: fields.at(-1)!.field } : null);
+    const last = fields.at(-1);
+    const f = focused.current ?? (last ? { el: document.getElementById(`field-${last.field}`) as HTMLInputElement, field: last.field } : null);
     if (!f?.el) return;
     const cur = (d[f.field] as string | undefined) ?? "";
     const start = f.el.selectionStart ?? cur.length;
@@ -61,106 +84,125 @@ export function Inspector({
   };
 
   return (
-    <div className="space-y-4 p-4 text-sm">
+    <div className="space-y-5 p-4">
       <div className="flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" style={{ background: meta.color }} />
-        <h2 className="font-semibold">{meta.label} node</h2>
-        <span className="ml-auto font-mono text-[10px] text-muted">{node.id}</span>
+        <Icon size={18} aria-hidden className="text-label-2" />
+        <h2 className="text-lg font-semibold">{meta.label}</h2>
       </div>
-      <p className="-mt-2 text-xs text-muted">{meta.hint}</p>
+      <p className="-mt-3 text-sm text-label-2">{meta.hint}</p>
 
       {d.kind === "input" && (
-        <div className="rounded-lg border border-line bg-panel-2 p-3 font-mono text-xs leading-6">
+        <div className="rounded-xl border border-separator bg-surface">
           {(d.bindings ?? []).map((b) => (
-            <div key={b.name}>
-              {b.name}: <span className="text-accent">{b.type}</span>
+            <div key={b.name} className="flex justify-between border-b border-separator px-3 py-2.5 font-mono text-sm last:border-0">
+              <span>{b.name}</span>
+              <span className="text-label-2">{b.type}</span>
             </div>
           ))}
-          <p className="mt-2 font-sans text-muted">Bound automatically from the problem input.</p>
+          <p className="px-3 py-2.5 text-sm text-label-2">Filled in from the problem’s input.</p>
         </div>
       )}
 
-      {fields.map(({ field, label, placeholder }) => {
-        const value = (d[field] as string | undefined) ?? "";
-        const error = check(field, value);
+      {fields.map(({ field: f, label, placeholder }) => {
+        const value = (d[f] as string | undefined) ?? "";
+        const error = check(f, value);
         return (
-          <label key={field} className="block">
-            <span className="mb-1 block text-xs font-medium text-muted">{label}</span>
+          <div key={f}>
+            <label htmlFor={`field-${f}`} className="mb-1.5 block text-sm font-medium text-label-2">
+              {label}
+            </label>
             <input
-              id={`field-${field}`}
+              id={`field-${f}`}
               value={value}
               placeholder={placeholder}
               spellCheck={false}
               autoComplete="off"
+              autoCapitalize="off"
               onFocus={(e) => {
-                focused.current = { el: e.currentTarget, field };
+                focused.current = { el: e.currentTarget, field: f };
                 onBeginEdit();
               }}
-              onChange={(e) => onChange({ [field]: e.target.value })}
-              className={`h-9 w-full rounded-md border bg-panel px-2 font-mono text-[13px] outline-none ${
-                error ? "border-bad" : "border-line focus:border-accent"
-              }`}
+              onChange={(e) => onChange({ [f]: e.target.value })}
+              className={`${field} font-mono ${error ? "border-red" : ""}`}
               aria-invalid={!!error}
+              aria-describedby={error ? `err-${f}` : undefined}
             />
-            {error && <span className="mt-1 block text-xs text-bad">{error}</span>}
-          </label>
+            {error && (
+              <p id={`err-${f}`} className="mt-1.5 text-sm text-red">
+                {error}
+              </p>
+            )}
+          </div>
         );
       })}
 
-      {fields.length > 0 && knownVars.length > 0 && (
+      {fields.length > 0 && (
         <div>
-          <span className="mb-1 block text-xs font-medium text-muted">Insert variable</span>
-          <div className="flex flex-wrap gap-1">
-            {knownVars.map((v) => (
+          <p className="mb-1.5 text-sm font-medium text-label-2">Insert</p>
+          <div className="flex flex-wrap gap-2">
+            {[...knownVars, "len()", "append(, )"].map((v) => (
               <button
                 key={v}
+                type="button"
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => insert(v)}
-                className="rounded border border-line bg-panel-2 px-1.5 py-0.5 font-mono text-xs hover:border-accent"
+                className="h-11 rounded-lg bg-fill px-3 font-mono text-sm hover:bg-fill-strong"
               >
                 {v}
-              </button>
-            ))}
-            {["len()", "append(, )"].map((fn) => (
-              <button
-                key={fn}
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => insert(fn)}
-                className="rounded border border-dashed border-line px-1.5 py-0.5 font-mono text-xs text-muted hover:border-accent"
-              >
-                {fn}
               </button>
             ))}
           </div>
         </div>
       )}
 
-      {d.kind !== "start" && d.kind !== "input" && (
-        <label className="block">
-          <span className="mb-1 block text-xs font-medium text-muted">Label (optional)</span>
+      {ports.map(({ port, target }) => (
+        <div key={port}>
+          <label htmlFor={`port-${port}`} className="mb-1.5 block text-sm font-medium text-label-2">
+            {PORT_LABEL[port]}
+          </label>
+          <select
+            id={`port-${port}`}
+            value={target ?? ""}
+            onChange={(e) => onConnect(port, e.target.value || null)}
+            className={field}
+          >
+            <option value="">Not connected</option>
+            {targets.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      ))}
+
+      {!fixed && (
+        <div>
+          <label htmlFor="field-label" className="mb-1.5 block text-sm font-medium text-label-2">
+            Label (optional)
+          </label>
           <input
+            id="field-label"
             value={d.label ?? ""}
             onFocus={onBeginEdit}
             onChange={(e) => onChange({ label: e.target.value })}
             placeholder={meta.label}
-            className="h-9 w-full rounded-md border border-line bg-panel px-2 outline-none focus:border-accent"
+            className={field}
           />
-        </label>
+        </div>
       )}
 
-      <div className="flex flex-wrap gap-2 pt-1">
-        <button
-          onClick={() => onChange({ breakpoint: !d.breakpoint })}
-          className={`rounded-md border px-3 py-1.5 text-xs ${d.breakpoint ? "border-bad text-bad" : "border-line text-muted hover:text-fg"}`}
-        >
-          {d.breakpoint ? "● Remove breakpoint" : "○ Add breakpoint"}
-        </button>
-        {d.kind !== "start" && d.kind !== "input" && (
-          <button onClick={onDelete} className="rounded-md border border-line px-3 py-1.5 text-xs text-muted hover:border-bad hover:text-bad">
+      <button type="button" onClick={() => onChange({ breakpoint: !d.breakpoint })} className={`${button.gray} w-full`}>
+        {d.breakpoint ? "Remove breakpoint" : "Add breakpoint"}
+      </button>
+
+      {!fixed && (
+        <div className="border-t border-separator pt-5">
+          <button type="button" onClick={onDelete} className={`${button.destructivePlain} w-full`}>
             Delete node
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

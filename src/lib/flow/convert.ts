@@ -26,11 +26,8 @@ export interface Draft {
   edges: RFEdge[];
 }
 
-// Branch ports are labelled on the node handles; edges just carry the colour.
-const PORT_COLOR: Record<string, string> = { true: "var(--ok)", false: "var(--bad)", body: "var(--accent)" };
-
+// Branch ports are labelled on the node handles, so edges stay neutral.
 export function makeEdge(source: string, port: string, target: string, targetHandle?: string | null): RFEdge {
-  const color = PORT_COLOR[port];
   return {
     id: `e-${source}-${port}-${target}-${Math.random().toString(36).slice(2, 7)}`,
     source,
@@ -38,8 +35,7 @@ export function makeEdge(source: string, port: string, target: string, targetHan
     target,
     targetHandle: targetHandle ?? undefined,
     type: "smoothstep",
-    style: color ? { stroke: color } : undefined,
-    markerEnd: { type: MarkerType.ArrowClosed, width: 16, height: 16, color },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 16, height: 16 },
   };
 }
 

@@ -1,44 +1,44 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
 
 export const metadata: Metadata = {
   title: "AlgoLab — design algorithms as runnable flowcharts",
   description: "Build an executable flowchart, step through every variable change, and test it before writing code.",
+  appleWebApp: { capable: true, title: "AlgoLab", statusBarStyle: "default" },
 };
 
-// Runs before paint so the saved/system theme never flashes.
-const themeScript = `try{var t=localStorage.getItem('algolab:theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark')}catch(e){}`;
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+};
+
+const navLink = "inline-flex h-11 items-center rounded-lg px-3 text-sm text-label-2 hover:text-label";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+    <html lang="en">
       <body className="min-h-dvh font-sans">
-        <header className="sticky top-0 z-30 h-14 border-b border-line bg-panel/90 backdrop-blur">
-          <div className="mx-auto flex h-full max-w-[1600px] items-center gap-6 px-4">
-            <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
-              <span className="grid h-7 w-7 place-items-center rounded-md bg-accent text-sm font-bold text-white dark:text-[#0d0f13]">A</span>
+        <header className="sticky top-0 z-30 border-b border-separator bg-bg">
+          <div className="flex h-14 items-center gap-2 px-2 sm:px-4">
+            <Link href="/" className="inline-flex h-11 items-center rounded-lg px-2 text-[1.0625rem] font-semibold">
               AlgoLab
             </Link>
-            <nav className="flex items-center gap-4 text-sm text-muted">
-              <Link href="/problems/" className="hover:text-fg">
+            <nav aria-label="Main" className="flex items-center">
+              <Link href="/problems/" className={navLink}>
                 Problems
               </Link>
-              <Link href="/guide/" className="hover:text-fg">
+              <Link href="/guide/" className={navLink}>
                 Guide
               </Link>
             </nav>
-            <div className="ml-auto flex items-center gap-2">
-              <ThemeToggle />
-            </div>
+            <a href="https://github.com/mathissdupont/algolab" className={`${navLink} ml-auto`} target="_blank" rel="noreferrer">
+              Source
+            </a>
           </div>
         </header>
         {children}

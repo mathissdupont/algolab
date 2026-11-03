@@ -1,9 +1,12 @@
 "use client";
 
+import { CircleCheck, CircleX, TriangleAlert } from "lucide-react";
 import { formatValue } from "@/lib/engine/evaluate";
 import type { JudgeReport } from "@/lib/engine/judge";
 import type { Value } from "@/lib/engine/types";
+import { ERROR_TITLE } from "@/lib/errorText";
 import type { Problem } from "@/lib/problems";
+import { button, field } from "../ui";
 
 export interface SubmissionState {
   mode: "judge" | "local";
@@ -16,7 +19,7 @@ const VERDICT_TEXT = {
   accepted: "Accepted",
   wrong_answer: "Wrong answer",
   runtime_error: "Runtime error",
-  invalid_graph: "Flowchart is not valid",
+  invalid_graph: "The flowchart isn’t complete yet",
 };
 
 export function TestsPanel({
@@ -40,105 +43,124 @@ export function TestsPanel({
 }) {
   const report = submission?.report;
   return (
-    <div className="space-y-5 p-4 text-sm">
-      <section>
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-semibold tracking-wide text-muted uppercase">Results</h2>
-          <button
-            onClick={onCheckExamples}
-            disabled={busy}
-            className="rounded-md border border-line px-2.5 py-1 text-xs hover:border-accent disabled:opacity-50"
-          >
-            Check examples
-          </button>
-        </div>
+    <div className="space-y-6 p-4">
+      <section aria-labelledby="results">
+        <h2 id="results" className="text-lg font-semibold">
+          Results
+        </h2>
 
         {!submission && (
-          <p className="mt-2 text-xs text-muted">
-            <b className="text-fg">Check examples</b> runs the {problem.sample_cases.length} public examples in your browser.{" "}
-            {judgeAvailable ? (
-              <>
-                <b className="text-fg">Submit</b> sends your flowchart to the judge, which also runs the hidden tests.
-              </>
-            ) : (
-              <>The judge server is not configured for this build, so hidden tests are unavailable.</>
-            )}
+          <p className="mt-1 text-sm leading-normal text-label-2">
+            Check examples runs the {problem.sample_cases.length} examples in your browser.{" "}
+            {judgeAvailable
+              ? "Judge solution also runs the hidden tests on the server."
+              : "Hidden tests need the judge server, which this build doesn’t have."}
           </p>
         )}
 
+        <button type="button" onClick={onCheckExamples} disabled={busy} className={`${button.gray} mt-3 w-full`}>
+          Check examples
+        </button>
+
         {submission?.error && (
-          <div className="mt-2 rounded-lg border border-bad/40 bg-bad-soft p-3 text-xs">
-            <b className="text-bad">Submission failed.</b> {submission.error}
+          <div className="mt-3 rounded-xl bg-red-tint p-3 text-sm" role="alert">
+            <p className="font-medium">The judge couldn’t be reached</p>
+            <p className="mt-0.5 text-label-2">{submission.error}. Your flowchart is saved; try again in a moment.</p>
           </div>
         )}
 
         {report && (
-          <div className="mt-2 space-y-2">
-            <div
-              className={`rounded-lg border p-3 ${report.verdict === "accepted" ? "border-ok/40 bg-ok-soft" : "border-bad/40 bg-bad-soft"}`}
-            >
-              <div className={`font-semibold ${report.verdict === "accepted" ? "text-ok" : "text-bad"}`}>{VERDICT_TEXT[report.verdict]}</div>
-              <div className="mt-0.5 text-xs text-muted">
-                {report.passed} / {report.total} {submission!.mode === "judge" ? "tests passed (public + hidden)" : "examples passed (browser check, no hidden tests)"}
+          <div className="mt-3 space-y-3" aria-live="polite">
+            <div className={`rounded-xl p-3 ${report.verdict === "accepted" ? "bg-green-tint" : "bg-red-tint"}`}>
+              <p className="flex items-center gap-1.5 font-medium">
+                {report.verdict === "accepted" ? (
+                  <CircleCheck size={18} aria-hidden className="text-green" />
+                ) : (
+                  <CircleX size={18} aria-hidden className="text-red" />
+                )}
+                {VERDICT_TEXT[report.verdict]}
+              </p>
+              <p className="mt-0.5 text-sm text-label-2">
+                {report.passed} / {report.total}{" "}
+                {submission!.mode === "judge" ? "tests passed (public + hidden)" : "examples passed (browser check, no hidden tests)"}
                 {report.verdict !== "invalid_graph" && <> · {report.totalSteps.toLocaleString("en-US")} steps total</>}
-              </div>
-              {submission!.submissionId && <div className="mt-1 font-mono text-[10px] text-muted">submission {submission!.submissionId}</div>}
+              </p>
+              {submission!.submissionId && <p className="mt-1 font-mono text-xs text-label-2">Submission {submission!.submissionId}</p>}
             </div>
             {report.issues?.map((i, k) => (
-              <p key={k} className="text-xs text-bad">
-                • {i.message}
+              <p key={k} className="flex gap-1.5 text-sm">
+                <TriangleAlert size={16} aria-hidden className="mt-0.5 shrink-0 text-red" /> {i.message}
               </p>
             ))}
-            {report.results.map((r, k) => (
-              <div key={r.case_id} className="rounded-lg border border-line p-2.5 text-xs">
-                <div className="flex items-center gap-2">
-                  <span className={r.status === "passed" ? "text-ok" : "text-bad"}>{r.status === "passed" ? "✓" : "✗"}</span>
-                  <span className="font-medium">{r.visibility === "public" ? `Example ${k + 1}` : `Hidden test ${k + 1}`}</span>
-                  <span className="ml-auto text-muted">{r.status === "passed" ? `${r.steps} steps` : r.status.replace("_", " ")}</span>
-                </div>
-                {r.visibility === "public" && r.status !== "passed" && (
-                  <div className="mt-1.5 space-y-0.5 font-mono break-all">
-                    <div>
-                      <span className="text-muted">expected </span>
-                      {formatValue(r.expected as Value)}
+            {report.results.length > 0 && (
+              <ul className="divide-y divide-separator rounded-xl border border-separator bg-surface">
+                {report.results.map((r, k) => (
+                  <li key={r.case_id} className="px-3 py-2.5 text-sm">
+                    <div className="flex items-center gap-2">
+                      {r.status === "passed" ? (
+                        <CircleCheck size={16} aria-label="Passed" className="text-green" />
+                      ) : (
+                        <CircleX size={16} aria-label="Failed" className="text-red" />
+                      )}
+                      <span className="font-medium">{r.visibility === "public" ? `Example ${k + 1}` : `Hidden test ${k + 1}`}</span>
+                      <span className="ml-auto text-label-2">
+                        {r.status === "passed" ? `${r.steps} steps` : r.status === "wrong_answer" ? "Wrong answer" : "Runtime error"}
+                      </span>
                     </div>
-                    {r.status === "wrong_answer" && (
-                      <div>
-                        <span className="text-muted">got      </span>
-                        {formatValue(r.actual as Value)}
-                      </div>
+                    {r.visibility === "public" && r.status !== "passed" && (
+                      <dl className="mt-1.5 space-y-0.5 font-mono break-all">
+                        <div>
+                          <dt className="inline font-sans text-label-2">Expected </dt>
+                          <dd className="inline">{formatValue(r.expected as Value)}</dd>
+                        </div>
+                        {r.status === "wrong_answer" && (
+                          <div>
+                            <dt className="inline font-sans text-label-2">Got </dt>
+                            <dd className="inline">{formatValue(r.actual as Value)}</dd>
+                          </div>
+                        )}
+                      </dl>
                     )}
-                  </div>
-                )}
-                {r.error && (
-                  <div className="mt-1.5 text-bad">
-                    <span className="font-mono">{r.error.code}</span>
-                    {r.visibility === "public" && <> — {r.error.message}</>}
-                  </div>
-                )}
-              </div>
-            ))}
+                    {r.error && (
+                      <p className="mt-1 text-label-2">
+                        {ERROR_TITLE[r.error.code]}
+                        {r.visibility === "public" && <>: {r.error.message}</>} <span className="font-mono text-xs">({r.error.code})</span>
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
       </section>
 
-      <section>
-        <h2 className="text-xs font-semibold tracking-wide text-muted uppercase">Custom input</h2>
-        <p className="mt-1 text-xs text-muted">Choose “Custom input” next to Run to execute these values (JSON).</p>
-        <div className="mt-2 space-y-2">
+      <section aria-labelledby="custom">
+        <h2 id="custom" className="text-lg font-semibold">
+          Custom input
+        </h2>
+        <p className="mt-1 text-sm text-label-2">Choose Custom input next to Run to execute these values. Enter each one as JSON.</p>
+        <div className="mt-3 space-y-3">
           {Object.keys(custom).map((name) => (
-            <label key={name} className="block">
-              <span className="mb-1 block font-mono text-xs text-muted">{name}</span>
+            <div key={name}>
+              <label htmlFor={`custom-${name}`} className="mb-1.5 block font-mono text-sm text-label-2">
+                {name}
+              </label>
               <textarea
+                id={`custom-${name}`}
                 value={custom[name]}
                 onChange={(e) => setCustom({ ...custom, [name]: e.target.value })}
                 rows={2}
                 spellCheck={false}
-                className="w-full resize-y rounded-md border border-line bg-panel px-2 py-1.5 font-mono text-xs outline-none focus:border-accent"
+                className={`${field} h-auto resize-y py-2 font-mono`}
               />
-            </label>
+            </div>
           ))}
-          {customError && <p className="text-xs text-bad">{customError}</p>}
+          {customError && (
+            <p className="text-sm text-red" role="alert">
+              {customError}
+            </p>
+          )}
         </div>
       </section>
     </div>

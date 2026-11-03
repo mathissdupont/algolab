@@ -1,5 +1,6 @@
 "use client";
 
+// Page pattern: Split pane — problem | flowchart canvas | inspector/debug/tests.
 import {
   Background,
   BackgroundVariant,
@@ -13,9 +14,11 @@ import {
   type EdgeChange,
   type NodeChange,
 } from "@xyflow/react";
+import { CircleCheck, Play, Redo2, SkipForward, StepBack, StepForward, TriangleAlert, Undo2, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { useIsDark } from "@/components/ThemeToggle";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { ProblemPanel } from "@/components/ProblemPanel";
+import { IconButton, Segmented, button, useModKey } from "@/components/ui";
 import { parseTarget } from "@/lib/engine/expression";
 import type { JudgeCase } from "@/lib/engine/judge";
 import { NODE_PORTS, type NodeKind, type Value } from "@/lib/engine/types";
@@ -54,9 +57,22 @@ function withFlags(nodes: RFNode[]): RFNode[] {
   return nodes.map((n) => ({ ...n, deletable: !FIXED.includes(n.data.kind) }));
 }
 
+/** Animation length that collapses to 0 when the user asked for reduced motion. */
+function motion(ms: number): number {
+  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : ms;
+}
+
+function nodeLabel(n: RFNode): string {
+  const d = n.data;
+  const what =
+    d.label?.trim() ||
+    (d.kind === "assign" ? `${d.target || "?"} ← ${d.expression || "?"}` : d.kind === "decision" || d.kind === "while" ? d.condition || "?" : d.kind === "return" ? d.expression || "?" : "");
+  return what ? `${KIND_META[d.kind].label}: ${what}` : KIND_META[d.kind].label;
+}
+
 function Editor({ problem }: { problem: Problem }) {
   const rf = useReactFlow<RFNode, RFEdge>();
-  const dark = useIsDark();
+  const mod = useModKey();
   const expectedInputs = useMemo(() => inputNames(problem), [problem]);
 
   const [nodes, setNodes] = useState<RFNode[]>(() => withFlags(starterDraft(problem).nodes));
@@ -67,6 +83,7 @@ function Editor({ problem }: { problem: Problem }) {
   const [mobileTab, setMobileTab] = useState<MobileTab>("flow");
   const [showIssues, setShowIssues] = useState(false);
   const [issuesOpen, setIssuesOpen] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
 
   // ── History (undo/redo) ─────────────────────────────────────────────
   const past = useRef<Draft[]>([]);
@@ -170,26 +187,35 @@ function Editor({ problem }: { problem: Problem }) {
       }),
     [nodes, activeId, showIssues, errorNodes],
   );
+  // The edge just taken is highlighted with colour and weight, not motion.
   const displayEdges = useMemo(() => {
     if (!fromId || !activeId) return edges;
     const entry = trace[cursor - 1];
     const port = entry?.note?.split("→ ")[1] ?? "next";
-    return edges.map((e) => (e.source === fromId && e.target === activeId && (e.sourceHandle ?? "next") === port ? { ...e, className: "is-taken", animated: true } : e));
+    return edges.map((e) => (e.source === fromId && e.target === activeId && (e.sourceHandle ?? "next") === port ? { ...e, className: "is-taken" } : e));
   }, [edges, fromId, activeId, trace, cursor]);
 
   // ── Graph editing ───────────────────────────────────────────────────
   const onNodesChange = useCallback((changes: NodeChange<RFNode>[]) => setNodes((ns) => applyNodeChanges(changes, ns)), []);
   const onEdgesChange = useCallback((changes: EdgeChange<RFEdge>[]) => setEdges((es) => applyEdgeChanges(changes, es)), []);
 
+  const connectPort = useCallback(
+    (source: string, port: string, target: string | null, targetHandle?: string | null) => {
+      commit();
+      setEdges((es) => {
+        const kept = es.filter((e) => !(e.source === source && (e.sourceHandle ?? "next") === port));
+        return target ? kept.concat(makeEdge(source, port, target, targetHandle)) : kept;
+      });
+    },
+    [commit],
+  );
+
   const onConnect = useCallback(
     (c: Connection) => {
       if (!c.sourceHandle || c.source === c.target) return;
-      commit();
-      setEdges((es) =>
-        es.filter((e) => !(e.source === c.source && e.sourceHandle === c.sourceHandle)).concat(makeEdge(c.source, c.sourceHandle!, c.target, c.targetHandle)),
-      );
+      connectPort(c.source, c.sourceHandle, c.target, c.targetHandle);
     },
-    [commit],
+    [connectPort],
   );
 
   const updateNode = useCallback((id: string, patch: Partial<FlowNodeData>) => {
@@ -219,27 +245,27 @@ function Editor({ problem }: { problem: Problem }) {
       let position = at;
       if (!position && selected && freePort) {
         const sideways = freePort === "false" || freePort === "exit";
-        position = { x: selected.position.x + (sideways ? 240 : 0), y: selected.position.y + (sideways ? 40 : 110) };
+        position = { x: selected.position.x + (sideways ? 260 : 0), y: selected.position.y + (sideways ? 40 : 120) };
       }
       if (!position) {
         const el = document.querySelector(".react-flow")?.getBoundingClientRect();
         const center = el ? { x: el.left + el.width / 2, y: el.top + el.height / 2 } : { x: 400, y: 300 };
         position = rf.screenToFlowPosition(center);
-        position = { x: position.x - 75 + (nodes.length % 5) * 12, y: position.y - 20 + (nodes.length % 5) * 12 };
+        position = { x: position.x - 80 + (nodes.length % 5) * 12, y: position.y - 24 + (nodes.length % 5) * 12 };
       }
       // Nudge the new node until it doesn't sit on top of an existing one.
       const overlaps = (p: { x: number; y: number }) =>
-        nodes.some((n) => Math.abs(n.position.x - p.x) < (n.measured?.width ?? 170) && Math.abs(n.position.y - p.y) < (n.measured?.height ?? 50) + 12);
+        nodes.some((n) => Math.abs(n.position.x - p.x) < (n.measured?.width ?? 180) && Math.abs(n.position.y - p.y) < (n.measured?.height ?? 60) + 16);
       for (let tries = 0; tries < 40 && overlaps(position); tries++) {
-        position = freePort === "false" || freePort === "exit" ? { x: position.x + 60, y: position.y } : { x: position.x, y: position.y + 70 };
+        position = freePort === "false" || freePort === "exit" ? { x: position.x + 64, y: position.y } : { x: position.x, y: position.y + 80 };
       }
       const node: RFNode = { id, type: "flow", position, data: newNodeData(kind), selected: true };
       setNodes((ns) => ns.map((n) => (n.selected ? { ...n, selected: false } : n)).concat(node));
       if (!at && selected && freePort) setEdges((es) => es.concat(makeEdge(selected.id, freePort, id)));
       const rect = document.querySelector(".react-flow")?.getBoundingClientRect();
       const screen = rf.flowToScreenPosition(position);
-      if (rect && (screen.x < rect.left || screen.x + 160 > rect.right || screen.y < rect.top || screen.y + 60 > rect.bottom)) {
-        rf.setCenter(position.x + 80, position.y + 30, { zoom: rf.getZoom(), duration: 250 });
+      if (rect && (screen.x < rect.left || screen.x + 180 > rect.right || screen.y < rect.top || screen.y + 70 > rect.bottom)) {
+        rf.setCenter(position.x + 90, position.y + 30, { zoom: rf.getZoom(), duration: motion(200) });
       }
       setSelectedId(id);
       setRightTab("inspect");
@@ -253,7 +279,7 @@ function Editor({ problem }: { problem: Problem }) {
       if (!kind) return;
       e.preventDefault();
       const p = rf.screenToFlowPosition({ x: e.clientX, y: e.clientY });
-      addNode(kind, { x: p.x - 75, y: p.y - 20 });
+      addNode(kind, { x: p.x - 80, y: p.y - 24 });
     },
     [rf, addNode],
   );
@@ -265,17 +291,17 @@ function Editor({ problem }: { problem: Problem }) {
       setNodes((ns) => ns.map((x) => ({ ...x, selected: x.id === id })));
       setSelectedId(id);
       setMobileTab("flow");
-      rf.setCenter(n.position.x + 80, n.position.y + 30, { zoom: Math.max(rf.getZoom(), 0.9), duration: 300 });
+      rf.setCenter(n.position.x + 90, n.position.y + 30, { zoom: Math.max(rf.getZoom(), 0.9), duration: motion(300) });
     },
     [nodes, rf],
   );
 
-  const resetToStarter = () => {
-    if (!confirm("Replace your flowchart with the empty starter? Your current draft will be lost.")) return;
+  const clearChart = () => {
     commit();
     const s = starterDraft(problem);
     setNodes(withFlags(s.nodes));
     setEdges(s.edges);
+    setSelectedId(null);
     clearDraft(problem.slug);
     requestAnimationFrame(() => rf.fitView({ padding: 0.25, maxZoom: 1.1 }));
   };
@@ -301,7 +327,8 @@ function Editor({ problem }: { problem: Problem }) {
       try {
         input[name] = JSON.parse(custom[name]);
       } catch {
-        setCustomError(`'${name}' is not valid JSON`);
+        const sample = JSON.stringify(problem.sample_cases[0]?.input[name] ?? null);
+        setCustomError(`Enter ${name} as JSON, for example ${sample}.`);
         setRightTab("tests");
         setMobileTab("panel");
         return null;
@@ -378,18 +405,18 @@ function Editor({ problem }: { problem: Problem }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const typing = e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement;
-      const mod = e.ctrlKey || e.metaKey;
-      if (mod && e.key === "Enter") {
+      const modKey = e.ctrlKey || e.metaKey;
+      if (modKey && e.key === "Enter") {
         e.preventDefault();
         handlers.current.startRun("run");
       } else if (e.key === "F10") {
         e.preventDefault();
         handlers.current.stepForward();
-      } else if (!typing && mod && (e.key === "z" || e.key === "Z")) {
+      } else if (!typing && modKey && (e.key === "z" || e.key === "Z")) {
         e.preventDefault();
         if (e.shiftKey) handlers.current.redo();
         else handlers.current.undo();
-      } else if (!typing && mod && (e.key === "y" || e.key === "Y")) {
+      } else if (!typing && modKey && (e.key === "y" || e.key === "Y")) {
         e.preventDefault();
         handlers.current.redo();
       }
@@ -400,41 +427,53 @@ function Editor({ problem }: { problem: Problem }) {
 
   const selected = nodes.find((n) => n.id === selectedId);
   const issueCount = validation.errors.length;
-
-  const btn = "h-8 rounded-md border border-line bg-panel px-2.5 text-xs font-medium hover:border-accent disabled:opacity-40 disabled:hover:border-line";
+  const atEnd = !!run && cursor >= trace.length - 1;
   const pane = (tab: MobileTab) => `${mobileTab === tab ? "flex" : "hidden"} lg:flex min-h-0 flex-col`;
 
+  const portChoices = selected
+    ? NODE_PORTS[selected.data.kind].map((port) => ({
+        port,
+        target: edges.find((e) => e.source === selected.id && (e.sourceHandle ?? "next") === port)?.target ?? null,
+      }))
+    : [];
+  const portTargets = selected
+    ? nodes.filter((n) => n.id !== selected.id && n.data.kind !== "start").map((n) => ({ id: n.id, label: nodeLabel(n) }))
+    : [];
+
   return (
-    <div className="flex h-[calc(100dvh-3.5rem)] flex-col">
-      {/* Mobile pane switcher */}
-      <div className="flex border-b border-line bg-panel lg:hidden" role="tablist">
-        {(["problem", "flow", "panel"] as MobileTab[]).map((t) => (
-          <button
-            key={t}
-            role="tab"
-            aria-selected={mobileTab === t}
-            onClick={() => setMobileTab(t)}
-            className={`flex-1 py-2 text-sm capitalize ${mobileTab === t ? "border-b-2 border-accent font-medium" : "text-muted"}`}
-          >
-            {t === "flow" ? "Flowchart" : t === "panel" ? "Debug & tests" : "Problem"}
-          </button>
-        ))}
+    <div className="flex h-[calc(100dvh-3.5rem-1px)] flex-col">
+      {/* Narrow: one pane at a time */}
+      <div className="border-b border-separator bg-bg p-2 lg:hidden">
+        <Segmented
+          label="Show"
+          value={mobileTab}
+          onChange={setMobileTab}
+          className="flex w-full"
+          options={[
+            { value: "problem", label: "Problem" },
+            { value: "flow", label: "Flowchart" },
+            { value: "panel", label: "Debug & tests" },
+          ]}
+        />
       </div>
 
-      <div className="grid min-h-0 flex-1 lg:grid-cols-[minmax(280px,26%)_1fr_minmax(300px,24%)]">
+      <div className="grid min-h-0 flex-1 lg:grid-cols-[minmax(300px,26%)_1fr_minmax(320px,26%)]">
         {/* Problem */}
-        <aside className={`${pane("problem")} scroll-thin overflow-y-auto border-line bg-panel lg:border-r`}>
+        <aside aria-label="Problem" className={`${pane("problem")} scroll-thin overflow-y-auto border-separator bg-bg lg:border-r`}>
           <ProblemPanel problem={problem} />
         </aside>
 
         {/* Canvas */}
-        <section className={`${pane("flow")} relative`}>
-          <div className="flex flex-wrap items-center gap-1.5 border-b border-line bg-panel px-2 py-1.5">
+        <section aria-label="Flowchart" className={`${pane("flow")} relative`}>
+          <div role="toolbar" aria-label="Run controls" className="flex flex-wrap items-center gap-1 border-b border-separator bg-bg px-2 py-1.5">
+            <label htmlFor="run-input" className="px-1 text-sm text-label-2">
+              Input
+            </label>
             <select
+              id="run-input"
               value={caseChoice}
               onChange={(e) => setCaseChoice(Number(e.target.value))}
-              className="h-8 rounded-md border border-line bg-panel px-2 text-xs"
-              aria-label="Input to run"
+              className="h-11 rounded-lg bg-fill px-3 text-sm text-label"
             >
               {problem.sample_cases.map((_, i) => (
                 <option key={i} value={i}>
@@ -443,42 +482,24 @@ function Editor({ problem }: { problem: Problem }) {
               ))}
               <option value={-1}>Custom input</option>
             </select>
-            <button
-              onClick={() => startRun("run")}
-              disabled={!!busy}
-              className="h-8 rounded-md bg-accent px-3 text-xs font-semibold text-white hover:opacity-90 disabled:opacity-40 dark:text-[#0d0f13]"
-              title="Run (Ctrl+Enter)"
-            >
-              ▶ Run
+            <button type="button" onClick={() => startRun("run")} disabled={!!busy} className={`${button.primary} px-4 text-sm`}>
+              <Play size={16} aria-hidden fill="currentColor" /> Run
             </button>
-            <button onClick={stepBack} disabled={!run || cursor === 0} className={btn} title="Step back">
-              ◀
+            <IconButton label="Step back" onClick={stepBack} disabled={!run || cursor === 0}>
+              <StepBack size={20} aria-hidden />
+            </IconButton>
+            <IconButton label="Step forward" shortcut="F10" onClick={stepForward} disabled={!!busy || atEnd}>
+              <StepForward size={20} aria-hidden />
+            </IconButton>
+            <IconButton label="Run to breakpoint" onClick={continueRun} disabled={!!busy || atEnd}>
+              <SkipForward size={20} aria-hidden />
+            </IconButton>
+            <IconButton label="Clear run" onClick={() => setRun(null)} disabled={!run}>
+              <X size={20} aria-hidden />
+            </IconButton>
+            <button type="button" onClick={submit} disabled={!!busy} className={`${button.tinted} ml-auto text-sm`}>
+              {busy === "submit" ? "Judging…" : JUDGE_URL ? "Judge solution" : "Check examples"}
             </button>
-            <button onClick={stepForward} disabled={!!busy || (!!run && cursor >= trace.length - 1)} className={btn} title="Step forward (F10)">
-              Step ▶
-            </button>
-            <button onClick={continueRun} disabled={!!busy || (!!run && cursor >= trace.length - 1)} className={btn} title="Continue to next breakpoint">
-              Continue ⏭
-            </button>
-            <button onClick={() => setRun(null)} disabled={!run} className={btn} title="Clear the current run">
-              Reset
-            </button>
-            <div className="ml-auto flex items-center gap-1.5">
-              <button onClick={undo} disabled={!past.current.length} className={btn} title="Undo (Ctrl+Z)" aria-label="Undo">
-                ↶
-              </button>
-              <button onClick={redo} disabled={!future.current.length} className={btn} title="Redo (Ctrl+Shift+Z)" aria-label="Redo">
-                ↷
-              </button>
-              <button
-                onClick={submit}
-                disabled={!!busy}
-                className={`${btn} border-ok text-ok`}
-                title={JUDGE_URL ? "Judge on public and hidden tests" : "Judge server not configured: checks public examples only"}
-              >
-                {busy === "submit" ? "Judging…" : JUDGE_URL ? "Submit" : "Check examples"}
-              </button>
-            </div>
           </div>
 
           <div className="relative min-h-0 flex-1" onDragOver={(e) => e.preventDefault()} onDrop={onDrop}>
@@ -502,88 +523,117 @@ function Editor({ problem }: { problem: Problem }) {
                 if (id) setRightTab((t) => (t === "debug" && run ? t : "inspect"));
               }}
               isValidConnection={(c) => c.source !== c.target}
-              colorMode={dark ? "dark" : "light"}
+              colorMode="system"
               deleteKeyCode={["Delete", "Backspace"]}
               minZoom={0.2}
               maxZoom={2}
-              proOptions={{ hideAttribution: false }}
             >
-              <Background variant={BackgroundVariant.Dots} gap={18} size={1.2} color="var(--canvas-dots)" />
+              <Background variant={BackgroundVariant.Dots} gap={20} size={1.2} color="var(--canvas-dots)" />
               <Controls showInteractive={false} />
             </ReactFlow>
 
-            {/* Palette */}
-            <div className="absolute top-3 left-3 z-10 flex flex-col gap-1 rounded-lg border border-line bg-panel p-1.5 shadow-sm">
-              <span className="px-1 text-[10px] font-semibold tracking-wide text-muted uppercase">Add</span>
-              {PALETTE.map((k) => (
-                <button
-                  key={k}
-                  draggable
-                  onDragStart={(e) => {
-                    e.dataTransfer.setData("application/algolab-node", k);
-                    e.dataTransfer.effectAllowed = "move";
-                  }}
-                  onClick={() => addNode(k)}
-                  className="flex items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs hover:bg-panel-2"
-                  title={`${KIND_META[k].hint}. Click to add${selected ? " after the selected node" : ""}, or drag onto the canvas.`}
-                >
-                  <span className="h-2.5 w-2.5 rounded-sm" style={{ background: KIND_META[k].color }} />
-                  {KIND_META[k].label}
-                </button>
-              ))}
-              <hr className="my-1 border-line" />
-              <button onClick={resetToStarter} className="rounded-md px-2 py-1 text-left text-[11px] text-muted hover:bg-panel-2 hover:text-fg">
-                Reset chart
-              </button>
+            {/* Edit history */}
+            <div className="absolute top-[68px] right-3 z-10 flex rounded-xl border lg:top-3 border-separator bg-surface shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+              <IconButton label="Undo" shortcut={`${mod}Z`} onClick={undo} disabled={!past.current.length} align="end">
+                <Undo2 size={20} aria-hidden />
+              </IconButton>
+              <IconButton label="Redo" shortcut={`${mod}⇧Z`} onClick={redo} disabled={!future.current.length} align="end">
+                <Redo2 size={20} aria-hidden />
+              </IconButton>
+            </div>
+
+            {/* Palette: a column on wide screens, a row on narrow ones */}
+            <div
+              role="group"
+              aria-labelledby="palette-title"
+              className="absolute top-3 left-3 z-10 flex items-center rounded-xl border border-separator bg-surface p-1 shadow-[0_1px_3px_rgba(0,0,0,0.06)] max-lg:right-3 max-lg:justify-between lg:w-36 lg:flex-col lg:items-stretch"
+            >
+              <p id="palette-title" className="px-2 text-xs font-medium text-label-2 max-lg:sr-only lg:pt-1 lg:pb-0.5">
+                Add
+              </p>
+              {PALETTE.map((k) => {
+                const Icon = KIND_META[k].icon;
+                return (
+                  <button
+                    key={k}
+                    type="button"
+                    draggable
+                    onDragStart={(e) => {
+                      e.dataTransfer.setData("application/algolab-node", k);
+                      e.dataTransfer.effectAllowed = "move";
+                    }}
+                    onClick={() => addNode(k)}
+                    className="flex h-11 shrink-0 items-center gap-1.5 rounded-lg px-1.5 text-left text-sm hover:bg-fill lg:w-full lg:gap-2.5 lg:px-2"
+                    aria-describedby="palette-hint"
+                  >
+                    <Icon size={16} aria-hidden className="text-label-2" />
+                    {KIND_META[k].label}
+                  </button>
+                );
+              })}
+              <span id="palette-hint" className="sr-only">
+                Adds the node after the selected node, or drag it onto the canvas.
+              </span>
             </div>
 
             {/* Validation status */}
-            <div className="absolute right-3 bottom-3 z-10 max-w-[min(420px,calc(100%-1.5rem))]">
+            <div className="absolute right-3 bottom-3 z-10 flex max-w-[min(420px,calc(100%-1.5rem))] flex-col items-end">
               {issuesOpen && issueCount > 0 && (
-                <ul className="scroll-thin mb-2 max-h-56 overflow-y-auto rounded-lg border border-line bg-panel p-1 text-xs shadow-lg">
+                <ul className="scroll-thin mb-2 max-h-64 w-full overflow-y-auto rounded-xl border border-separator bg-surface shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
                   {validation.errors.map((iss, k) => (
-                    <li key={k}>
+                    <li key={k} className="border-b border-separator last:border-0">
                       <button
+                        type="button"
                         disabled={!iss.nodeId}
                         onClick={() => iss.nodeId && focusNode(iss.nodeId)}
-                        className="w-full rounded px-2 py-1.5 text-left hover:bg-panel-2 disabled:cursor-default"
+                        className="flex min-h-11 w-full items-start gap-2 px-3 py-2.5 text-left text-sm hover:bg-fill disabled:cursor-default disabled:hover:bg-transparent"
                       >
-                        <span className="text-bad">●</span> {iss.message}
+                        <TriangleAlert size={16} aria-hidden className="mt-0.5 shrink-0 text-red" />
+                        {iss.message}
                       </button>
                     </li>
                   ))}
                 </ul>
               )}
               <button
+                type="button"
+                aria-expanded={issueCount ? issuesOpen : undefined}
                 onClick={() => {
                   setShowIssues(true);
                   setIssuesOpen((o) => !o);
                 }}
-                className={`ml-auto flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs shadow-sm ${
-                  issueCount ? "border-warn/50 bg-warn-soft text-warn" : "border-ok/50 bg-ok-soft text-ok"
-                }`}
+                className="flex h-11 items-center gap-2 rounded-lg border border-separator bg-surface px-3 text-sm shadow-[0_1px_3px_rgba(0,0,0,0.06)]"
               >
-                {issueCount ? `${issueCount} issue${issueCount > 1 ? "s" : ""} to fix` : "✓ Flowchart is valid"}
+                {issueCount ? (
+                  <>
+                    <TriangleAlert size={16} aria-hidden className="text-red" />
+                    {`${issueCount} issue${issueCount > 1 ? "s" : ""} to fix`}
+                  </>
+                ) : (
+                  <>
+                    <CircleCheck size={16} aria-hidden className="text-green" />
+                    Flowchart is valid
+                  </>
+                )}
               </button>
             </div>
           </div>
         </section>
 
         {/* Right panel */}
-        <aside className={`${pane("panel")} border-line bg-panel lg:border-l`}>
-          <div className="flex border-b border-line" role="tablist">
-            {(["inspect", "debug", "tests"] as RightTab[]).map((t) => (
-              <button
-                key={t}
-                role="tab"
-                aria-selected={rightTab === t}
-                onClick={() => setRightTab(t)}
-                className={`flex-1 py-2 text-xs font-medium capitalize ${rightTab === t ? "border-b-2 border-accent text-fg" : "text-muted hover:text-fg"}`}
-              >
-                {t}
-                {t === "debug" && run && <span className="ml-1 text-accent">●</span>}
-              </button>
-            ))}
+        <aside aria-label="Inspector, debugger and tests" className={`${pane("panel")} border-separator bg-bg lg:border-l`}>
+          <div className="border-b border-separator p-2">
+            <Segmented
+              label="Panel"
+              value={rightTab}
+              onChange={setRightTab}
+              className="flex w-full"
+              options={[
+                { value: "inspect", label: "Inspect" },
+                { value: "debug", label: run ? "Debug ●" : "Debug" },
+                { value: "tests", label: "Tests" },
+              ]}
+            />
           </div>
           <div className="scroll-thin flex min-h-0 flex-1 flex-col overflow-y-auto">
             {rightTab === "inspect" &&
@@ -592,22 +642,29 @@ function Editor({ problem }: { problem: Problem }) {
                   key={selected.id}
                   node={selected}
                   knownVars={knownVars}
+                  ports={portChoices}
+                  targets={portTargets}
                   onChange={(patch) => updateNode(selected.id, patch)}
                   onBeginEdit={commit}
+                  onConnect={(port, target) => connectPort(selected.id, port, target)}
                   onDelete={() => deleteNode(selected.id)}
                 />
               ) : (
-                <div className="space-y-3 p-4 text-sm text-muted">
-                  <p>Select a node to edit it.</p>
-                  <ul className="space-y-1.5 text-xs">
-                    <li>• Click a block in <b className="text-fg">Add</b> to insert it after the selected node, or drag it onto the canvas.</li>
-                    <li>• Drag from a node’s bottom/right dot to another node to connect them. Connecting a used port replaces its old connection.</li>
-                    <li>• Select a node or connection and press Delete to remove it.</li>
-                    <li>• Your chart is saved automatically in this browser.</li>
+                <div className="flex flex-1 flex-col p-4">
+                  <h2 className="text-lg font-semibold">Build your flowchart</h2>
+                  <ul className="mt-2 space-y-2 text-sm leading-normal text-label-2">
+                    <li>Select a node to edit it. Choose a block under Add to insert it after the selected node, or drag it onto the canvas.</li>
+                    <li>Connect nodes by dragging from a node’s dot to another node, or pick the next step in this panel.</li>
+                    <li>Select a node or connection and press Delete to remove it. Your chart is saved in this browser.</li>
                   </ul>
-                  <a href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/guide/`} target="_blank" className="inline-block text-xs text-accent underline">
-                    Expression & node reference ↗
+                  <a href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/guide/`} target="_blank" className={`${button.plain} mt-2 -ml-4 self-start`}>
+                    Open the guide
                   </a>
+                  <div className="mt-auto border-t border-separator pt-4">
+                    <button type="button" onClick={() => setConfirmClear(true)} className={`${button.destructivePlain} w-full`}>
+                      Clear chart
+                    </button>
+                  </div>
                 </div>
               ))}
             {rightTab === "debug" && <DebugPanel run={run} cursor={cursor} setCursor={setCursor} nodes={nodes} onFocusNode={focusNode} />}
@@ -626,6 +683,15 @@ function Editor({ problem }: { problem: Problem }) {
           </div>
         </aside>
       </div>
+
+      <ConfirmDialog
+        open={confirmClear}
+        title={`Delete all nodes in “${problem.title}”?`}
+        body="Start, Input and an empty Return stay. You can bring the nodes back with Undo."
+        confirmLabel="Delete nodes"
+        onConfirm={clearChart}
+        onClose={() => setConfirmClear(false)}
+      />
     </div>
   );
 }

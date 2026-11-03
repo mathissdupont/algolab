@@ -1,108 +1,140 @@
+// Page pattern: Detail — documentation article.
+import { CirclePlay, CornerDownLeft, Diamond, Equal, LogIn, Repeat } from "lucide-react";
 import type { Metadata } from "next";
+import { Footer, Group, SectionTitle } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Guide — AlgoLab" };
 
-const NODES: [string, string, string][] = [
-  ["Start", "next", "Where execution begins. Exactly one per flowchart."],
-  ["Input", "next", "Binds the problem's input values to variables. Created for you from the problem contract."],
-  ["Assign", "next", "Stores the value of an expression in a variable (count) or an element (result[i])."],
-  ["Decision", "true / false", "Evaluates a condition and follows exactly one branch."],
-  ["While", "body / exit", "Repeats the body while the condition is true. The body must lead back to the While node."],
-  ["Return", "—", "Ends execution and returns the expression as the answer."],
+const NODES = [
+  { icon: CirclePlay, name: "Start", outputs: "next", body: "Where execution begins. Exactly one per flowchart." },
+  { icon: LogIn, name: "Input", outputs: "next", body: "Reads the problem’s input into variables. Added for you from the problem contract." },
+  { icon: Equal, name: "Assign", outputs: "next", body: "Stores a value in a variable (count) or an element (result[i])." },
+  { icon: Diamond, name: "Decision", outputs: "true, false", body: "Checks a condition and follows exactly one branch." },
+  { icon: Repeat, name: "While", outputs: "body, exit", body: "Repeats the body while the condition holds. The body must lead back to the While node." },
+  { icon: CornerDownLeft, name: "Return", outputs: "—", body: "Ends the run and returns the answer." },
 ];
 
 const OPERATORS: [string, string][] = [
-  ["+  -  *", "Arithmetic. + also joins strings and arrays."],
-  ["/", "True division (7 / 2 = 3.5)"],
-  ["//  %", "Floor division and modulo, Python semantics (-7 // 2 = -4, -7 % 3 = 2)"],
-  ["==  !=  <  <=  >  >=", "Comparison. == compares arrays element by element."],
-  ["and  or  not", "Boolean logic, short-circuiting (&&, ||, ! also accepted)"],
-  ["x in s,  x not in s", "Membership in a string or array"],
+  ["+  -  *", "Arithmetic. + also joins text and arrays."],
+  ["/", "Division with decimals: 7 / 2 is 3.5"],
+  ["//  %", "Whole-number division and remainder, as in Python: -7 // 2 is -4"],
+  ["==  !=  <  <=  >  >=", "Comparison. == compares arrays item by item."],
+  ["and  or  not", "Logic; && || ! work too"],
+  ["x in s,  x not in s", "Membership in text or an array"],
   ["xs[i],  grid[r][c]", "Indexing; negative indexes count from the end"],
   ["[1, 2, 3],  []", "Array literals"],
-  ["true  false  null", "Literals (True / False / None also accepted)"],
+  ["true  false  null", "Literals; True, False and None work too"],
 ];
 
 const FUNCTIONS: [string, string][] = [
-  ["len(x)", "Length of an array or string (length(x) also works)"],
-  ["append(xs, v)", "New array with v added at the end"],
-  ["slice(x, start, end?)", "Part of an array or string, like x[start:end]"],
-  ["array(n, fill?)", "New array of n copies of fill (default 0)"],
-  ["min(...), max(...)", "Smallest / largest of the arguments, or of one array"],
+  ["len(x)", "Length of an array or text"],
+  ["append(xs, v)", "A new array with v added at the end"],
+  ["slice(x, start, end)", "Part of an array or text, like x[start:end]"],
+  ["array(n, fill)", "A new array of n copies of fill (default 0)"],
+  ["min(…), max(…)", "Smallest or largest of the arguments, or of one array"],
   ["abs(n)", "Absolute value"],
-  ["str(x), int(x)", "Convert to text / integer"],
+  ["str(x), int(x)", "Convert to text or to a whole number"],
   ["lower(s), upper(s)", "Change letter case"],
-  ["is_digit(s), is_letter(s)", "Character class checks"],
+  ["is_digit(s), is_letter(s)", "Check what kind of characters s holds"],
 ];
+
+function CodeRows({ rows }: { rows: [string, string][] }) {
+  return (
+    <Group>
+      <dl className="divide-y divide-separator">
+        {rows.map(([code, desc]) => (
+          <div key={code} className="px-4 py-3">
+            <dt className="font-mono text-sm">{code}</dt>
+            <dd className="mt-0.5 text-sm text-label-2">{desc}</dd>
+          </div>
+        ))}
+      </dl>
+    </Group>
+  );
+}
 
 export default function GuidePage() {
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10 text-sm">
-      <h1 className="text-2xl font-semibold tracking-tight">Flowchart guide</h1>
-      <p className="mt-2 text-muted">
-        Every flowchart is a real program. AlgoLab validates its structure, then executes it one node at a time.
-      </p>
+    <>
+      <main className="mx-auto max-w-3xl px-4 pt-10 sm:pt-14">
+        <h1 className="text-[2rem] leading-tight font-semibold">Flowchart guide</h1>
+        <p className="mt-2 max-w-[65ch] text-label-2">
+          Every flowchart is a real program. AlgoLab checks its structure, then runs it one node at a time.
+        </p>
 
-      <h2 className="mt-10 mb-3 text-lg font-semibold">Nodes</h2>
-      <div className="overflow-x-auto rounded-xl border border-line bg-panel">
-        <table className="w-full text-left">
-          <thead className="border-b border-line text-xs text-muted">
-            <tr>
-              <th className="p-3">Node</th>
-              <th className="p-3">Outputs</th>
-              <th className="p-3">Behaviour</th>
-            </tr>
-          </thead>
-          <tbody>
-            {NODES.map(([n, o, b]) => (
-              <tr key={n} className="border-b border-line last:border-0">
-                <td className="p-3 font-medium">{n}</td>
-                <td className="p-3 font-mono text-xs">{o}</td>
-                <td className="p-3 text-muted">{b}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+        <section className="mt-10" aria-labelledby="nodes">
+          <SectionTitle id="nodes">Nodes</SectionTitle>
+          <Group>
+            <ul className="divide-y divide-separator">
+              {NODES.map(({ icon: Icon, name, outputs, body }) => (
+                <li key={name} className="flex gap-3 px-4 py-3">
+                  <Icon size={18} aria-hidden className="mt-0.5 shrink-0 text-label-2" />
+                  <div>
+                    <div className="font-medium">
+                      {name} <span className="ml-1 text-sm font-normal text-label-2">→ {outputs}</span>
+                    </div>
+                    <p className="mt-0.5 text-sm text-label-2">{body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Group>
+        </section>
 
-      <h2 className="mt-10 mb-3 text-lg font-semibold">Expressions</h2>
-      <p className="mb-3 text-muted">
-        Expressions use a small Python-like language. They are parsed by AlgoLab — never executed as JavaScript or Python.
-      </p>
-      <div className="grid gap-4 md:grid-cols-2">
-        {[OPERATORS, FUNCTIONS].map((rows, i) => (
-          <div key={i} className="rounded-xl border border-line bg-panel">
-            {rows.map(([code, desc]) => (
-              <div key={code} className="border-b border-line p-3 last:border-0">
-                <code className="font-mono text-xs text-accent">{code}</code>
-                <p className="mt-1 text-muted">{desc}</p>
-              </div>
-            ))}
+        <section className="mt-10" aria-labelledby="expr">
+          <SectionTitle id="expr">Expressions</SectionTitle>
+          <p className="mb-4 max-w-[65ch] text-sm text-label-2">
+            Expressions use a small Python-like language. AlgoLab reads them itself; they never run as JavaScript or Python.
+          </p>
+          <div className="grid gap-6 md:grid-cols-2">
+            <CodeRows rows={OPERATORS} />
+            <CodeRows rows={FUNCTIONS} />
           </div>
-        ))}
-      </div>
+        </section>
 
-      <h2 className="mt-10 mb-3 text-lg font-semibold">Rules worth knowing</h2>
-      <ul className="space-y-2 text-muted">
-        <li>• Every output port must be connected, and every node must be reachable from Start.</li>
-        <li>• A variable must be assigned on <em>every</em> path before it is used — the validator tells you which one is missing.</li>
-        <li>• Arrays are copied on assignment: after <code className="font-mono">b = a</code>, changing b[0] does not change a.</li>
-        <li>• Conditions must be true or false; numbers are not treated as booleans.</li>
-        <li>• Runs stop after 200,000 steps or 2 seconds, so an infinite loop shows an error instead of freezing the page.</li>
-      </ul>
+        <section className="mt-10" aria-labelledby="rules">
+          <SectionTitle id="rules">Rules worth knowing</SectionTitle>
+          <Group>
+            <ul className="divide-y divide-separator text-sm">
+              {[
+                "Every output must be connected, and every node must be reachable from Start.",
+                "A variable must be assigned on every path before it’s used. The checker names the one that’s missing.",
+                "Arrays are copied when assigned: after b = a, changing b[0] leaves a alone.",
+                "Conditions must be true or false. Numbers don’t count as true or false.",
+                "A run stops after 200,000 steps or 2 seconds, so an endless loop shows an error instead of freezing the page.",
+              ].map((r) => (
+                <li key={r} className="px-4 py-3">
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </Group>
+        </section>
 
-      <h2 className="mt-10 mb-3 text-lg font-semibold">Keyboard</h2>
-      <ul className="space-y-1 text-muted">
-        <li>
-          <kbd className="font-mono">Delete</kbd> / <kbd className="font-mono">Backspace</kbd> — remove selected node or connection
-        </li>
-        <li>
-          <kbd className="font-mono">Ctrl+Z</kbd> undo · <kbd className="font-mono">Ctrl+Shift+Z</kbd> / <kbd className="font-mono">Ctrl+Y</kbd> redo
-        </li>
-        <li>
-          <kbd className="font-mono">Ctrl+Enter</kbd> run the selected example · <kbd className="font-mono">F10</kbd> step forward
-        </li>
-      </ul>
-    </main>
+        <section className="mt-10" aria-labelledby="keys">
+          <SectionTitle id="keys">Keyboard</SectionTitle>
+          <Group>
+            <dl className="divide-y divide-separator text-sm">
+              {[
+                ["Delete or Backspace", "Remove the selected node or connection"],
+                ["Ctrl+Z / ⌘Z", "Undo"],
+                ["Ctrl+Shift+Z / ⌘⇧Z", "Redo"],
+                ["Ctrl+Enter / ⌘↩", "Run the selected example"],
+                ["F10", "Step forward"],
+                ["Tab", "Move between controls; nodes can be connected from the Inspect panel without dragging"],
+              ].map(([k, v]) => (
+                <div key={k} className="flex flex-wrap justify-between gap-2 px-4 py-3">
+                  <dt>
+                    <kbd className="rounded bg-fill px-1.5 py-0.5 font-mono text-xs">{k}</kbd>
+                  </dt>
+                  <dd className="text-label-2">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </Group>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }
