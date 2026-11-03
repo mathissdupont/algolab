@@ -56,9 +56,10 @@ describe("judge API", () => {
     expect(await get.json()).toMatchObject({ problem_id: "ALG-E002", verdict: "accepted", passed: 2 });
   });
 
-  it("rejects unknown, unsupported and malformed submissions", async () => {
+  it("rejects unknown and malformed submissions, and problems without a test suite", async () => {
     expect((await handleRequest(post({ problem_slug: "nope", graph: {} }), deps())).status).toBe(404);
-    expect((await handleRequest(post({ problem_slug: "distinct-count", graph: {} }), deps())).status).toBe(400);
+    // The fake suites only cover count-even.
+    expect((await handleRequest(post({ problem_slug: "distinct-count", graph: {} }), deps())).status).toBe(500);
     const bad = await handleRequest(post({ problem_slug: "count-even", graph: { schema_version: "1.0", nodes: [5], edges: [null] } }), deps());
     expect(bad.status).toBe(400);
   });

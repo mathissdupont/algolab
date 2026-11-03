@@ -1,4 +1,4 @@
-import { cloneValue, evaluate, resolveIndex, type Env } from "./evaluate";
+import { cloneValue, dictKey, dictGet, dictSet, evaluate, isDict, resolveIndex, type Env } from "./evaluate";
 import { EngineError, LIMITS, type ErrorCode, type FlowGraph, type Value } from "./types";
 import { validateGraph, type CompiledGraph, type CompiledNode, type Issue } from "./validate";
 
@@ -43,23 +43,30 @@ function assign(c: CompiledNode, env: Env) {
   const target = c.target!;
   const expr = c.expr!;
 
-  // `xs = append(xs, v)` is semantically a copy-then-replace; pushing in place
-  // gives the same observable result without quadratic copying.
-  if (
-    target.indices.length === 0 &&
-    expr.t === "call" &&
-    expr.fn === "append" &&
-    expr.args.length === 2 &&
-    expr.args[0].t === "var" &&
-    expr.args[0].name === target.name &&
-    Array.isArray(env.get(target.name))
-  ) {
-    const arr = env.get(target.name) as Value[];
-    if (arr.length >= LIMITS.maxCollectionSize) {
-      throw new EngineError("COLLECTION_LIMIT", `Arrays are limited to ${LIMITS.maxCollectionSize} elements`);
+  // `xs = append(xs, v)`, `xs = pop(xs)` and `m = remove(m, k)` are
+  // copy-then-replace; changing the value in place gives the same observable
+  // result without copying the whole collection every time.
+  const self =
+    target.indices.length === 0 && expr.t === "call" && expr.args[0]?.t === "var" && expr.args[0].name === target.name
+      ? env.get(target.name)
+      : undefined;
+  if (expr.t === "call" && self !== undefined) {
+    if (expr.fn === "append" && expr.args.length === 2 && Array.isArray(self)) {
+      if (self.length >= LIMITS.maxCollectionSize) {
+        throw new EngineError("COLLECTION_LIMIT", `Arrays are limited to ${LIMITS.maxCollectionSize} elements`);
+      }
+      self.push(cloneValue(evaluate(expr.args[1], env)));
+      return;
     }
-    arr.push(cloneValue(evaluate(expr.args[1], env)));
-    return;
+    if (expr.fn === "pop" && expr.args.length === 1 && Array.isArray(self)) {
+      if (self.length === 0) throw new EngineError("INDEX_OUT_OF_RANGE", "pop() of an empty array");
+      self.pop();
+      return;
+    }
+    if (expr.fn === "remove" && expr.args.length === 2 && isDict(self)) {
+      self.entries.delete(dictKey(evaluate(expr.args[1], env)));
+      return;
+    }
   }
 
   const value = evaluate(expr, env);
@@ -76,6 +83,11 @@ function assign(c: CompiledNode, env: Env) {
     const idx = evaluate(target.indices[k], env);
     if (typeof container === "string") {
       throw new EngineError("TYPE_MISMATCH", "Strings cannot be changed in place; build a new string instead");
+    }
+    if (isDict(container)) {
+      if (k === target.indices.length - 1) dictSet(container, idx, cloneValue(value));
+      else container = dictGet(container, idx);
+      continue;
     }
     const i = resolveIndex(container, idx);
     const arr = container as Value[];

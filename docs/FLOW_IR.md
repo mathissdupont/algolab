@@ -43,11 +43,12 @@ Every output port must have exactly one edge. A node may have any number of inco
 ## Semantics ([interpreter.ts](../src/lib/engine/interpreter.ts))
 
 - One step = executing one node. Each case starts with a fresh environment.
-- Arrays have value semantics: assigning `b = a` stores a copy. `xs[i] = v` updates the array in place.
+- Arrays and maps have value semantics: assigning `b = a` stores a copy. `xs[i] = v` and `m[k] = v` update in place.
+- Maps (`{}`, `{k: v}`) take number, text or boolean keys and keep insertion order. `xs = append(xs, v)`, `xs = pop(xs)` and `m = remove(m, k)` run in place, so building a collection is linear.
 - Conditions must evaluate to booleans. Numbers are not truthy.
 - `//` and `%` follow Python (floor). Negative indexes count from the end.
 - Integer results outside ±2^53 raise `INTEGER_OVERFLOW`.
-- Errors: `INVALID_GRAPH`, `PARSE_ERROR`, `UNDEFINED_VARIABLE`, `TYPE_MISMATCH`, `INDEX_OUT_OF_RANGE`, `DIVISION_BY_ZERO`, `UNKNOWN_FUNCTION`, `STEP_LIMIT_EXCEEDED`, `TIME_LIMIT_EXCEEDED`, `COLLECTION_LIMIT`, `INTEGER_OVERFLOW`, `MISSING_INPUT`.
+- Errors: `INVALID_GRAPH`, `PARSE_ERROR`, `UNDEFINED_VARIABLE`, `TYPE_MISMATCH`, `INDEX_OUT_OF_RANGE`, `KEY_NOT_FOUND`, `DIVISION_BY_ZERO`, `UNKNOWN_FUNCTION`, `STEP_LIMIT_EXCEEDED`, `TIME_LIMIT_EXCEEDED`, `COLLECTION_LIMIT`, `INTEGER_OVERFLOW`, `MISSING_INPUT`.
 
 ## Judging ([judge.ts](../src/lib/engine/judge.ts))
 

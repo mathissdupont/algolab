@@ -10,6 +10,7 @@ export type Expr =
   | { t: "null" }
   | { t: "var"; name: string }
   | { t: "list"; items: Expr[] }
+  | { t: "map"; entries: [Expr, Expr][] }
   | { t: "index"; obj: Expr; index: Expr }
   | { t: "call"; fn: string; args: Expr[] }
   | { t: "unary"; op: "-" | "not"; arg: Expr }
@@ -32,9 +33,10 @@ export const KEYWORDS = new Set(["and", "or", "not", "in", "true", "false", "Tru
 export const BUILTINS = new Set([
   "len", "length", "append", "abs", "min", "max", "str", "int",
   "lower", "upper", "slice", "array", "is_digit", "is_letter",
+  "has", "get", "keys", "values", "remove", "pop", "sort",
 ]);
 
-const OPERATORS = ["//", "==", "!=", "<=", ">=", "&&", "||", "+", "-", "*", "/", "%", "<", ">", "!", "(", ")", "[", "]", ","];
+const OPERATORS = ["//", "==", "!=", "<=", ">=", "&&", "||", "+", "-", "*", "/", "%", "<", ">", "!", "(", ")", "[", "]", "{", "}", ":", ","];
 
 function tokenize(src: string): Token[] {
   const tokens: Token[] = [];
@@ -240,8 +242,34 @@ class Parser {
     if (t.k === "op" && t.v === "[") {
       return { t: "list", items: this.parseList("]") };
     }
+    if (t.k === "op" && t.v === "{") {
+      return { t: "map", entries: this.parseEntries() };
+    }
     if (t.k === "eof") throw new EngineError("PARSE_ERROR", "Expression ended unexpectedly");
     throw new EngineError("PARSE_ERROR", `Unexpected '${t.v}' at column ${t.pos + 1}`);
+  }
+
+  private parseEntries(): [Expr, Expr][] {
+    const entries: [Expr, Expr][] = [];
+    this.enter();
+    if (this.isOp("}")) {
+      this.next();
+      this.depth--;
+      return entries;
+    }
+    for (;;) {
+      const key = this.parseOr();
+      this.expectOp(":");
+      entries.push([key, this.parseOr()]);
+      if (this.isOp(",")) {
+        this.next();
+        continue;
+      }
+      this.expectOp("}");
+      break;
+    }
+    this.depth--;
+    return entries;
   }
 
   private parseList(close: string): Expr[] {
@@ -302,6 +330,12 @@ export function collectVariables(e: Expr, out: Set<string> = new Set()): Set<str
       break;
     case "list":
       e.items.forEach((x) => collectVariables(x, out));
+      break;
+    case "map":
+      e.entries.forEach(([k, v]) => {
+        collectVariables(k, out);
+        collectVariables(v, out);
+      });
       break;
     case "index":
       collectVariables(e.obj, out);

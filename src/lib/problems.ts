@@ -48,10 +48,21 @@ export interface ProblemSummary {
 
 /**
  * Capabilities implemented by the current engine. A problem is offered only
- * when its tier and every required feature are covered (see MVP_PROBLEMS.md).
+ * when its tier and every required feature are covered (see MVP_PROBLEMS.md),
+ * and every offered problem has a reference flowchart verified against the
+ * private judge suite.
+ *
+ * Maps cover sets and hash maps; arrays with append/pop cover stacks, queues
+ * and deques. There is no call node yet: "recursion" problems are solved with
+ * an explicit stack, which the guide explains.
  */
-export const ENGINE_TIERS = ["foundation"];
-export const ENGINE_FEATURES = ["variables", "comparisons", "loops", "arrays", "strings", "two-pointers", "binary-search"];
+export const ENGINE_TIERS = ["foundation", "intermediate", "advanced"];
+export const ENGINE_FEATURES = [
+  "variables", "comparisons", "loops", "arrays", "strings", "matrix", "boundaries", "simulation",
+  "two-pointers", "binary-search", "prefix-sum", "sliding-window", "sorting",
+  "sets", "hash-maps", "stack", "queue", "deque", "priority-queue",
+  "dynamic-programming", "graphs", "graph-traversal", "backtracking", "recursion",
+];
 
 export const problems: Problem[] = (bank as unknown as { problems: Problem[] }).problems;
 

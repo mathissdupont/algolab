@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { execute } from "../../src/lib/engine/interpreter";
-import { judgeGraph, type JudgeCase } from "../../src/lib/engine/judge";
+import { JUDGE_LIMITS, judgeGraph, type JudgeCase } from "../../src/lib/engine/judge";
 import { FLOW_SCHEMA_VERSION, type FlowGraph } from "../../src/lib/engine/types";
 import { validateGraph } from "../../src/lib/engine/validate";
 import { getProblem } from "../../src/lib/problems";
@@ -80,7 +80,7 @@ describe("interpreter", () => {
     const report = judgeGraph(g, cases, ["numbers"]);
     expect(report.verdict).toBe("runtime_error");
     expect(report.results.map((r) => r.error?.code)).toEqual(["STEP_LIMIT_EXCEEDED", "STEP_LIMIT_EXCEEDED", "STEP_LIMIT_EXCEEDED"]);
-    expect(report.totalSteps).toBeLessThanOrEqual(30_001);
+    expect(report.totalSteps).toBeLessThanOrEqual(JUDGE_LIMITS.maxTotalSteps + 3);
   });
 
   it("hides private case details in judge reports", () => {

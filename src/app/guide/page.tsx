@@ -23,12 +23,20 @@ const OPERATORS: [string, string][] = [
   ["x in s,  x not in s", "Membership in text or an array"],
   ["xs[i],  grid[r][c]", "Indexing; negative indexes count from the end"],
   ["[1, 2, 3],  []", "Array literals"],
+  ['{},  {"a": 1, 2: true}', "Map literals. Keys are numbers, text or true/false."],
+  ["m[k],  m[k] = v", "Read or set a map entry; reading a missing key is an error"],
   ["true  false  null", "Literals; True, False and None work too"],
 ];
 
 const FUNCTIONS: [string, string][] = [
   ["len(x)", "Length of an array or text"],
   ["append(xs, v)", "A new array with v added at the end"],
+  ["pop(xs)", "A new array without its last item; read xs[-1] first if you need it"],
+  ["sort(xs)", "A sorted copy; arrays of arrays sort item by item"],
+  ["has(m, k),  k in m", "Whether map m has key k"],
+  ["get(m, k, default)", "m[k], or default when k is missing"],
+  ["keys(m), values(m)", "The keys or values of a map, in insertion order"],
+  ["remove(m, k)", "A new map without key k"],
   ["slice(x, start, end)", "Part of an array or text, like x[start:end]"],
   ["array(n, fill)", "A new array of n copies of fill (default 0)"],
   ["min(…), max(…)", "Smallest or largest of the arguments, or of one array"],
@@ -101,7 +109,9 @@ export default function GuidePage() {
                 "A variable must be assigned on every path before it’s used. The checker names the one that’s missing.",
                 "Arrays are copied when assigned: after b = a, changing b[0] leaves a alone.",
                 "Conditions must be true or false. Numbers don’t count as true or false.",
-                "A run stops after 200,000 steps or 2 seconds, so an endless loop shows an error instead of freezing the page.",
+                "Stacks, queues and sets need no special node: use an array with append and pop, a head index, or a map.",
+                "There is no function call node yet. Where you would recurse, keep an explicit stack of what is left to do.",
+                "A run stops after a million steps or 3 seconds, so an endless loop shows an error instead of freezing the page.",
               ].map((r) => (
                 <li key={r} className="px-4 py-3">
                   {r}

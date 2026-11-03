@@ -136,10 +136,15 @@ export default function Home() {
             <Group>
               <dl className="divide-y divide-separator">
                 {[
-                  ["Problems", `${problems.length} original problems. ${runnable} can be solved today; the rest unlock as the engine grows.`],
-                  ["Expressions", "A small Python-like language: arithmetic, comparisons, and/or/not, indexing, len and append."],
+                  [
+                    "Problems",
+                    runnable === problems.length
+                      ? `${problems.length} original problems, from counting loops to graph search and dynamic programming. Every one can be solved as a flowchart.`
+                      : `${problems.length} original problems. ${runnable} can be solved today; the rest unlock as the engine grows.`,
+                  ],
+                  ["Expressions", "A small Python-like language: arithmetic, comparisons, and/or/not, indexing, arrays and maps, sort, append and pop."],
                   ["Debugger", "Step forward and back, breakpoints, a timeline and the full variable history."],
-                  ["Safety", "Runs stop after 200,000 steps, so an endless loop shows an error instead of freezing the page."],
+                  ["Safety", "Runs stop after a million steps, so an endless loop shows an error instead of freezing the page."],
                   ["Privacy", "Drafts stay in this browser. Only the flowchart is sent, and only when you judge it."],
                 ].map(([k, v]) => (
                   <div key={k} className="px-4 py-4">

@@ -72,7 +72,7 @@ export function Catalog({ items }: { items: ProblemSummary[] }) {
           options={[{ value: "All", label: "All" }, ...LEVELS.map((l) => ({ value: l, label: l }))]}
           className="w-full sm:w-auto"
         />
-        <Switch label="Solvable now only" checked={runnableOnly} onChange={setRunnableOnly} />
+        {items.some((p) => !p.supported) && <Switch label="Solvable now only" checked={runnableOnly} onChange={setRunnableOnly} />}
       </div>
 
       <p className="mt-6 text-sm text-label-2" aria-live="polite">

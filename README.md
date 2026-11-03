@@ -3,14 +3,14 @@
 **Design the algorithm before you write the code.** AlgoLab is a browser-based environment where you solve algorithm problems by building a flowchart that actually runs. You can step through it node by node, watch every variable change, and submit it to a judge that also runs hidden tests.
 
 - **Live site:** https://mathissdupont.github.io/algolab/
-- **Status:** early access. 18 of 60 problems can be run; the rest are listed as *Coming soon* until the engine supports the features they need (sets, maps, stacks, queues, recursion, graphs, …).
+- **Status:** early access. All 60 problems can be solved. Each one has a reference flowchart that passes its public and hidden seed tests.
 
 ## What works
 
 | Area | Status |
 |---|---|
 | Flowchart editor | Start / Input / Assign / Decision / While / Return nodes, drag & drop, click-to-insert-after, connect/replace ports, delete, undo/redo, autosave in the browser |
-| Expression language | Python-like, parsed into an AST (never `eval`). Integers, floats, booleans, strings, nested arrays, `// %` with Python semantics, `in`, indexing, 14 built-ins. See the in-app **Guide** |
+| Expression language | Python-like, parsed into an AST (never `eval`). Integers, floats, booleans, strings, nested arrays, maps, `// %` with Python semantics, `in`, indexing, 21 built-ins including `sort`, `pop`, `has`, `get` and `keys`. See the in-app **Guide** |
 | Validation | One Start, ports connected, reachability, While bodies loop back, parse errors, and “variable may be used before it is assigned” (definite-assignment analysis) |
 | Execution | Deterministic interpreter in a Web Worker, with a full variable trace, step forward and back, breakpoints, a timeline, and typed errors (`STEP_LIMIT_EXCEEDED`, `INDEX_OUT_OF_RANGE`, `TYPE_MISMATCH`, …) |
 | Judging | **Check examples** runs the public samples in the browser. **Submit** sends the flowchart to the judge (a Netlify Function), which runs the public and private tests and stores the submission in Netlify Blobs |
@@ -81,10 +81,10 @@ NEXT_PUBLIC_JUDGE_URL=http://localhost:8888 npm run dev
 
   The judge runs on Netlify because `*.workers.dev` and `*.vercel.app` are blocked by some Turkish ISPs, and `*.netlify.app` is reachable.
 
-Both run on free tiers. The judge caps each submission at 30,000 interpreter steps (20,000 per test), so every submission stays fast and cheap. The seed solutions use fewer than 300 steps per test. Submissions are rate-limited to 12 per minute per client.
+Both run on free tiers. The judge caps each submission at 3,000,000 interpreter steps (1,000,000 per test). The heaviest reference flowchart, N-Queens with iterative backtracking, needs about 280,000 steps on its largest seed test; most need fewer than 1,000. Submissions are rate-limited to 12 per minute per client.
 
 ## Limits
 
-- Interactive runs: 200,000 steps / 2 s. Judge: 20,000 steps per test, 30,000 per submission.
+- Interactive runs: 1,000,000 steps / 3 s. Judge: 1,000,000 steps per test, 3,000,000 per submission.
 - Flowcharts: 150 nodes, 300 connections, 400-character expressions.
 - The 300 seed tests (2 public + 3 hidden per problem) are a starting point. They are not production-strength judge coverage.

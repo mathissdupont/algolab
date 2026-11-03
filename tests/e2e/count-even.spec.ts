@@ -117,12 +117,13 @@ test("solve Count Even Readings with a flowchart", async ({ page }) => {
   await expect(node(page, incI)).toContainText("i + 0");
 });
 
-test("unsupported problems are marked Coming soon", async ({ page }) => {
+test("every problem opens a workspace, including ones that need maps", async ({ page }) => {
   await page.goto("/algolab/problems/");
-  await expect(page.getByText("Coming soon").first()).toBeVisible();
+  await expect(page.getByText("60 of 60 problems")).toBeVisible();
+  await expect(page.getByText("Coming soon")).toHaveCount(0);
   await page.goto("/algolab/problems/distinct-count/");
-  await expect(page.getByRole("heading", { name: "Not runnable yet" })).toBeVisible();
-  await expect(page.getByText("sets", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Count Different Codes" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Run", exact: true })).toBeVisible();
 });
 
 test("invalid flowcharts cannot be run", async ({ page }) => {

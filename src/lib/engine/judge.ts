@@ -36,11 +36,11 @@ export interface JudgeReport {
 }
 
 /**
- * Judging uses a tighter step budget than interactive runs so a submission
- * fits the serverless judge's CPU allowance. Seed solutions need < 300 steps
- * per case, so this leaves ~100x headroom.
+ * Step budget for judging. The heaviest reference flowchart (N-Queens,
+ * iterative backtracking) needs ~280k steps on one seed case; a full
+ * submission at this budget runs in well under a second.
  */
-export const JUDGE_LIMITS = { maxStepsPerCase: 20_000, maxTotalSteps: 30_000 };
+export const JUDGE_LIMITS = { maxStepsPerCase: 1_000_000, maxTotalSteps: 3_000_000 };
 
 export function judgeGraph(graph: FlowGraph, cases: JudgeCase[], expectedInputs: string[]): JudgeReport {
   const v = validateGraph(graph, expectedInputs);

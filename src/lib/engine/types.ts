@@ -3,7 +3,16 @@
 
 export const FLOW_SCHEMA_VERSION = "1.0";
 
-export type Value = number | string | boolean | null | Value[];
+export type Value = number | string | boolean | null | Value[] | Dict;
+
+/**
+ * A map from number/string/boolean keys to values. A plain object holding a
+ * Map so it survives structured cloning to and from the Web Worker.
+ */
+export interface Dict {
+  kind: "dict";
+  entries: Map<string, [Value, Value]>;
+}
 
 export type NodeKind = "start" | "input" | "assign" | "decision" | "while" | "return";
 
@@ -51,6 +60,7 @@ export type ErrorCode =
   | "UNDEFINED_VARIABLE"
   | "TYPE_MISMATCH"
   | "INDEX_OUT_OF_RANGE"
+  | "KEY_NOT_FOUND"
   | "DIVISION_BY_ZERO"
   | "UNKNOWN_FUNCTION"
   | "STEP_LIMIT_EXCEEDED"
@@ -76,7 +86,7 @@ export const LIMITS = {
   maxExpressionDepth: 48,
   maxCollectionSize: 200_000,
   maxStringLength: 200_000,
-  maxSteps: 200_000,
+  maxSteps: 1_000_000,
   maxTraceEntries: 3_000,
-  maxWallTimeMs: 2_000,
+  maxWallTimeMs: 3_000,
 };
